@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+
+	<!-- General -->
+	<send_chat_messages>true</send_chat_messages>		<!-- true = Send local records chat messages to player || false = No chat messages -->
+	<show_widget>true</show_widget>						<!-- true = Show local records widget || false = Hide local records widget -->
+	<max_records_to_display>10</max_records_to_display>	<!-- How many records are displayed in local records widget -->
+	
+	<!-- Deafult position of server records -->
+    <posX>-158.</posX>
+	<posY>44.5</posY>
+	<posZ>0</posZ>
+	
+    <!-- Chat messages format -->
+	<!-- Possible dynamic values: {rank} {score} {mapname} {score_evolution} -->
+	<first_record>$fffYour first record $f51>> $z$fffRank $o{rank} $z$fffwith $o{score} $z$fffon {mapname}</first_record>
+	<new_record>$fffNew personal best $f51>> $z$fffRank $o{rank} $z$fffwith $o{score} $z$0c0(+{score_evolution}) $z$fffon {mapname}</new_record>
+		
+	<!-- Widget settings -->	
+	<window_color>1919194d</window_color>
+	
+	<header_color>1919194d</header_color>
+	
+	<header_text>$fff$i$oServer Records</header_text>
+	<header_text_when_no_records>$fff$i$oNo Server Records</header_text_when_no_records>
+	
+	<icon_style></icon_style>
+	<icon_substyle></icon_substyle>
+	
+	<!-- Rank -->
+	
+	<rank_scale>0.8</rank_scale>
+	<rank_prefix></rank_prefix>
+	
+	<!-- NickName -->
+	<nickname_style>TextValueSmall</nickname_style>
+	<nickname_scale>0.9</nickname_scale>
+	<nickname_prefix></nickname_prefix>
+	
+	<!-- Score -->
+
+	<score_scale>0.9</score_scale>	
+	<score_prefix></score_prefix>
+	
+	
+	<!-- Limited time -->
+	<LT_actif>false</LT_actif>	<!-- -->
+	<LT_time>1000</LT_time>	<!-- time in seconds (1 minute  = 60, 1 hour = 3600, 1 day = 86400) -->
+	<LT_entry>$0f0You have $fe0$i$w{time_left}$0f0 to validate</LT_entry>
+	<LT_lateentry>$w$fff=>$f00You have no more time to validate</LT_lateentry>
+	<LT_toolate>$w$fff=>$f00Sorry, your score wouldn't be counted </LT_toolate>
+	<LT_on>{nickname}$z has enabled limited time</LT_on>
+	<LT_off>{nickname}$z has disabled limited time</LT_off>
+	<LT_reset_time>{nickname}$z has reseted the limited time</LT_reset_time>
+	<LT_reset_recs>{nickname}$z has reseted the records</LT_reset_recs>
+	<LT_print_time>The limited time is {now }of {time1} ({time2} seconds)</LT_print_time>
+	<LT_time_played>{nickname}$z has played {timeplayed}. {who} have {timeleft} to validate.</LT_time_played>
+	<LT_never_played>{nickname}$z hasn't played</LT_never_played>
+	<LT_alone>To have some help, type /lt help</LT_alone>
+	<LT_admin_only>Command just for admins</LT_admin_only>
+	<LT_error_add>Error, unknown login or unvalide time</LT_error_add>
+	<LT_newtime_player>{nickname}$z has now {time} to validate</LT_newtime_player>
+	<LT_config_saved>Configuration saved</LT_config_saved>
+	<LT_is_active>Limited time plugin is {active}</LT_is_active>
+	
+	<LT_help>
+		<lt>All commands begin with /lt</lt>
+		<gettime>Display the time played by a player</gettime>
+		<addtime>Add time (in seconds) to a player. /lt addtime login time_to_add</addtime>
+		<on>Enable the limited time</on>
+		<off>Disable the limited time</off>
+		<reinit>Reset the table. recs: the records, time: the time played, all: records and time</reinit>
+		<get>Get the timeout value</get>
+		<set>Set a new timeout. /lt set new_value</set>
+		<save>Save the configuration</save>
+		
+	</LT_help>
+
+</config>
+	

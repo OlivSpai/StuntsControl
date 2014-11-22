@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+      
+	<!-- SET HERE THE POSN OF THE WIDGETS -->
+	<posns>
+		<most_active>47.2 20.5</most_active>	
+		<top_donate>47.2 3.87</top_donate>			
+		<top_bet>47.2 -12.76</top_bet>
+			<top_nation>-63.3 -7</top_nation>
+	</posns>
+	
+	<settings>
+	   <!-- SHOWS -->	
+		<show_most_active>true</show_most_active> <!-- Show Most Active. True = true, False = false -->
+		<show_top_donate>true</show_top_donate> <!-- Show Top Donate. True = true, False = false -->
+		<show_top_bet>true</show_top_bet> <!-- Show Top Bet. True = true, False = false -->
+	<show_top_nation>true</show_top_nation> 
+		<!-- NAMES -->
+		<names>		
+			<headline_most_active>Most Active</headline_most_active> <!-- NAME OF MOST ACTIVE -->	
+			<headline_top_donate>Top Donators</headline_top_donate> <!-- NAME OF TOP DONATE -->
+			<headline_top_bet>Top Bets Wins</headline_top_bet> 
+			<headline_top_nation>Top Nations</headline_top_nation><!-- NAME OF TOP Nation -->			
+		</names>
+	</settings>
+</config>
+	

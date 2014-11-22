@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugins>
+	<plugin>chat.admin.php</plugin> <!-- DO NOT DEACTIVATE THIS! -->
+	<plugin>manager.plugins.php</plugin>
+	
+	
+	<plugin>chat.format.php</plugin>
+	<plugin>chat.player.php</plugin>
+	<plugin>chat.pm.php</plugin>
+	<plugin>plugin.adminpanel.php</plugin>
+	<plugin>plugin.banlist.php</plugin>
+	<plugin>plugin.challenges.php</plugin>
+	<plugin>plugin.donate.php</plugin>
+	<plugin>plugin.ignorelist.php</plugin>
+	<plugin>plugin.norank.php</plugin>
+	<plugin>plugin.vinfo.php</plugin>
+	
+	<plugin>plugin.stunters.scorebonus.php</plugin>
+	<plugin>plugin.catchme.php</plugin>
+
+	<plugin>plugin.infomessage.php</plugin>
+	<plugin>plugin.jukebox.php</plugin>
+	<plugin>plugin.stunters.mxinfo.php</plugin>
+	<plugin>plugin.lottery.php</plugin>
+	<plugin>plugin.top.players.php</plugin>	
+	
+	<plugin>plugin.servermenu.php</plugin>
+	<plugin>plugin.nouse.fox.betting.php</plugin>
+	<plugin>plugin.players.php</plugin>
+	<plugin>plugin.stunters.localrecords.php</plugin>
+	
+	<plugin>plugin.podium.php</plugin>
+	<!-- <plugin>plugin.simple_buttons.php</plugin> -->
+</plugins>

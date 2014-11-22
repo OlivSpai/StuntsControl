@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+	<!-- Minimum amount of server planets -->
+	<MinServerPlanets>500</MinServerPlanets>
+	
+	<!-- Minimum planets sending to player when reach a score bonus -->
+	<MinPlanetsToPay>2</MinPlanetsToPay>
+	
+	<!-- Maximum planets sending to player when reach a score bonus -->
+	<MaxPlanetsToPay>15</MaxPlanetsToPay>
+	
+	<!-- List of bonus score separated by coma -->
+	<ScoresBonus>33,51,111,200,222,333,421,444,555,666,777,888,999,1000,1051,1111,1234,1664,2000,2222,2456,3000,3333,3456,4000,4444</ScoresBonus>
+	
+	<!-- Chat messages format -->
+	<!-- Message send to all players when a player win a score bonus -->
+	<BonusScoreWinMessage>{nickname} $z$o$cc3wins $0f0{planets}$fff planets$cc3 for bonus score $0f0{score} $cc3!</BonusScoreWinMessage>
+	
+	<!-- Message send to player when not win score bonus -->
+	<BonusScoreNotWinMessage>$o$cc3Congratulations but score bonus $0f0({score}) $cc3brings no.</BonusScoreNotWinMessage>
+</config>
+	

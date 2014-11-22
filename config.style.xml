@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FoxControl_style_config>
+	<!-- Default Widget Style -->
+	<default_style1>Bgs1InRace</default_style1> 			<!-- Default Widget Style 1 (Headline Boxes) -->
+	<default_substyle1>BgCardList</default_substyle1> 		<!-- Default Widget Substyle 1 (Headline Boxes) -->
+	<default_style2>BgsPlayerCard</default_style2> 			<!-- Default Widget Style 2 (Content Boxes) -->
+	<default_substyle2>ProgressBar</default_substyle2> 		<!-- Default Widget Substyle 2 (Content Boxes) -->
+	
+	<!-- Default Window Style -->
+	<default_window_style>BgsPlayerCard</default_window_style>		<!-- Default Window Style -->
+	<default_window_substyle>ProgressBar</default_window_substyle>	<!-- Default Window Substyle -->
+	 <default_image>http://ahp.li/8368227da2a89fc872ef.jpg</default_image> 
+	<!-- Alternative Widget Styles -->
+	<alt_widgetstyles>
+		<style>
+			<name>Style1</name>								<!-- Name of the Style which will be displayed in the Settings Window of the Widget -->
+		
+			<style1>Bgs1InRace</style1>						<!-- Manialink Style 1 of the Widget -->
+			<substyle1>NavButtonBlink</substyle1>			<!-- Manialink Substyle 1 of the Widget -->
+		
+			<style2>BgsPlayerCard</style2>					<!-- Manialink Style 2 -->
+			<substyle2>ProgressBar</substyle2>				<!-- Manialink Substyle 2 -->
+		</style>
+		
+		<style>
+			<name>Style2</name>
+		
+			<style1>Bgs1InRace</style1>
+			<substyle1>NavButtonBlink</substyle1>
+		
+			<style2>Bgs1InRace</style2>
+			<substyle2>NavButtonBlink</substyle2>
+		</style>
+		
+		<style>
+			<name>Style3</name>
+		
+			<style1>Bgs1InRace</style1>
+			<substyle1>BgCardList</substyle1>
+		
+			<style2>Bgs1</style2>
+			<substyle2>BgCardList</substyle2>
+		</style>
+	</alt_widgetstyles>
+	
+</FoxControl_style_config>

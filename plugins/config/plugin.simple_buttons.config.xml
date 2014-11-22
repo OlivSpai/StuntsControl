@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+	<buttons>
+		<!-- IMPORTANT!!: If you don't use a field (example imagefocus) then left it clean but DON'T CLEAR IT! -->
+		<!-- LINKSTYLE CAN BE url FOR A WEBSITE URL OR manialink FOR A INGAME MANIALINK -->
+
+	<size>10 4.26</size>
+		<pos>0 0</pos>
+		<image>http:///control.stunters.org/plugins/simple_buttons/stunters.png</image>
+		<imagefocus>http:///control.stunters.org/plugins/simple_buttons/stunters_focus.png</imagefocus>
+		<linkstyle>url</linkstyle>
+		<link>http://stunters.org</link> 	
+	</buttons>

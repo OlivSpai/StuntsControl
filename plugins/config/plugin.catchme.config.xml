@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<catchme>
+
+<min_players_to_activate_game>3</min_players_to_activate_game>
+<min_server_planets>400</min_server_planets> 
+
+<!-- Random time delay between games in secs -->
+<min_time_between_games>1200</min_time_between_games>
+<max_time_between_games>2400</max_time_between_games>
+
+<!-- <game name="string" sprite="string url" min_sprite_size="real" max_sprite_size="real" music="string url" min_pay="integer" max_pay="integer" /> -->
+<games>
+	<game name="$fffSuper$f00Mario" sprite="http:///control.stunters.org/plugins/catchme/supermario.png" min_sprite_size="7" max_sprite_size="14" music="http:///control.stunters.org/plugins/catchme/SuperMario.ogg" min_pay="5" max_pay="10" />	
+	<game name="$963Martin" sprite="http:///control.stunters.org/plugins/catchme/Martin.png" min_sprite_size="4" max_sprite_size="10" music="http:///control.stunters.org/plugins/catchme/Martin.ogg" min_pay="10" max_pay="15" />
+	<game name="$f33Phone" sprite="http:///control.stunters.org/plugins/catchme/Phone.png" min_sprite_size="4" max_sprite_size="8" music="http:///control.stunters.org/plugins/catchme/Phone.ogg" min_pay="8" max_pay="12" />
+	<game name="$0f0Ovni" sprite="http:///control.stunters.org/plugins/catchme/Ovni.png" min_sprite_size="3" max_sprite_size="8" music="http:///control.stunters.org/plugins/catchme/Ovni.ogg" min_pay="6" max_pay="10" />
+	
+</games>
+
+</catchme>

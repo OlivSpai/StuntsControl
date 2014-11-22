@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<lottery>
+<winmin>5</winmin><!-- minimum Jackpot grow (should not be beyond 5 planets) -->
+<winmax>7</winmax><!-- maximum Jackpot grow -->
+<!-- how aggressive should our jackpot grow - the more in winmin / winmax, the faster the jackpot grows -->
+<minplanets>600</minplanets><!-- Minimum Server Planets for Lottery. Do not set beyond 600 !-->
+<winpotmax>151</winpotmax><!-- maximum Jackpot size in planets -->
+<minplayers>3</minplayers><!-- When does the Lottery start (finishers) -->
+<winpercent>20</winpercent><!-- do not set beyond 0 or above 1 0.25 = 25 % winchance to all players, 1= 100 % (only finishers can win) so it can happen even if there is a win chance of 100 % that nobody wins in a round-->
+<winposy>-83</winposy>
+<winposx>126.7</winposx><!--do not set beyond 0 or above 1 0.25 = 25 % winchance to all players, 1= 100 % (only finishers can win) so it can happen even if there is a win chance of 100 % that nobody wins in a round-->
+</lottery>

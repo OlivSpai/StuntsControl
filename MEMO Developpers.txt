@@ -1,0 +1,124 @@
+##############
+### Pastis ###
+##############
+
+A savoir le Limite Time option en place enregistrement des réglages   tels ,  le temps attribuer et  ON ou OFF  '  enregistrement sur le fichier  config,xml    mémoire si rebootage  des serveurs ,
+
+option , affichage  des LT sur  le Srank  si le limite Time est activer ou pas ,  perso sera  revue  plus tard a toi de voir priorité  au  Server Rank et  Server Points:)
+
+--Modifier  version du contrôleur  v2.3,,,,,,
+
+--Problème de faire restart  pour  voir les listes  map rank ou autre 
+
+--Catchme correction des fichier BIK  en cour «  pastis »
+
+--Voir enregistrement  sur  la  bdd patch des joueur continent,nation,voir  commune  qui peut être  utile au futur
+
+--Menu a finir 
+--server rank
+--server points
+
+
+
+--animation affichage des icons drapeau  dans  plugin,podium  (top nation)
+j'ai tenter sans réussite même en prenant  model :( 
+
+Memoire de TMU
+
+// TopNations
+	$xml .= '<frame posn="57.15 -31.50 1">';
+	$xml .= '<format textsize="1" textcolor="FFFF"/>';
+	$xml .= '<quad posn="0 0 0.02" sizen="17.75 15.43" style="BgsPlayerCard" substyle="BgRacePlayerName"/>';
+	$xml .= '<quad posn="14.15 -11.88 0.03" sizen="4 4" action="'. $re_config['ManialinkId'] .'09" image="'. $re_config['IMAGES'][0]['WIDGET_OK_NORMAL'][0] .'" imagefocus="'. $re_config['IMAGES'][0]['WIDGET_OK_FOCUS'][0] .'"/>';
+	$xml .= '<quad posn="0.4 -0.36 0.04" sizen="16.95 2" style="BgsPlayerCard" substyle="ProgressBar"/>';
+	$xml .= '<quad posn="'. $re_config['Positions']['left']['icon']['x'] .' '. $re_config['Positions']['left']['icon']['y'] .' 0.05" sizen="2.5 2.5" style="'. $re_config['SCORETABLE_LISTS'][0]['TOP_NATIONS'][0]['ICON_STYLE'][0] .'" substyle="'. $re_config['SCORETABLE_LISTS'][0]['TOP_NATIONS'][0]['ICON_SUBSTYLE'][0] .'"/>';
+	$xml .= '<label posn="'. $re_config['Positions']['left']['title']['x'] .' '. $re_config['Positions']['left']['title']['y'] .' 0.05" sizen="17.3 0" textsize="1" text="'. $re_config['SCORETABLE_LISTS'][0]['TOP_NATIONS'][0]['TITLE'][0] .'"/>';
+	$xml .= '<frame posn="0 -2.7 0.04">';	// Entries
+	$rank = 1;
+	$line = 0;
+	foreach ($re_scores['TopNations'] as &$item) {
+		$xml .= '<label posn="3.15 -'. (1.75 * $line) .' 0.02" sizen="2.65 1.7" halign="right" scale="0.9" textcolor="'. $re_config['STYLE'][0]['WIDGET_RACE'][0]['COLORS'][0]['SCORES'][0] .'" text="'. $re_config['STYLE'][0]['WIDGET_RACE'][0]['FORMATTING_CODES'][0] . $item['score'] .'"/>';
+		$xml .= '<quad posn="3.9 '. (($line == 0) ? 0.3 : -(1.75 * $line - 0.3)) .' 0.02" sizen="2 2" image="tmtp://Skins/Avatars/Flags/'. (($item['nation'] == 'OTH') ? 'other' : $item['nation']) .'.dds"/>';
+		$xml .= '<label posn="6.6 -'. (1.75 * $line) .' 0.02" sizen="11.2 1.7" scale="0.9" text="'. $re_config['STYLE'][0]['WIDGET_RACE'][0]['FORMATTING_CODES'][0] . $re_config['IocNations'][$item['nation']] .'"/>';
+
+
+############
+### Momo ###
+############
+
+
+
+
+############
+### Spaï ###
+############
+
+TODO:
+- local records:
+	- Fond fenêtre à revoir
+	- quand stunters map type, le local ne s'affiche pas correctement
+- Server Rank (à finir)
+- http://xml.stunters.org/?rubric=maps : Ajouter une requête 'search'
+- Next page et prev page sur le plug MX, mise en place d'un cache.
+- Ajout d'une class "Page" (ou ML) qui sera, à terme, la remplaçante de la class window:
+	- $ml = new ml("MLId", _X, _Y, _HAllign, _VAlign);
+	- SetSize
+	- 
+	- SetContent
+	- SetDeclaration
+	- SetMainDeclaration
+	- SetLoop
+	- SetMoveable
+	- Build
+- Une class "Anim", ou l'intégré à la class ML ?
+- Double chat bug à voir (mystère)
+
+Changes:
+2014-11-10
+	- Convertion de tous les posnX, devenus obsolètes, par RelativePosition.X, etc
+	- Server menu: on peut cliquer sur le fond pour fermer le server menu.
+	- Local records: Fenêtre de nouveau moveable
+	- Ajout du dossier cache pour le plugin MX, le srank, etc...
+	- Ajout de la colone 'time' sur la table records pour les maptypes Racers et ReachScore
+	- Prémice du server rank (average) avec prise en charge du maptype et fullscreen (mouais...)
+
+2014-11-11
+	- SQL
+		- Ajout de la table 'maps'
+		- Ajout d'un id sur la table 'records' pour pouvoir effacer un record facilement.
+		- Ajout de 'continent', 'path' sur la table 'players'
+		- Suppression de la table 'vinfo' et clean de tous les plugins (tout ce qui était dans 'vinfo' est maintenant dans 'players')
+
+	- control.php :
+		- Changement de l'api version de 2012-06-19 vers 2013-04-16 (pour activer le TriggerPageAction et faire quelques tests)
+		- Ajout de la variable CurrentMap pour la map courante. (inutile de faire un appel à une requête RPC sur les plugins)
+		- Suppression de tous les onBeginChallenge, onEndChallenge (utiliser OnBeginMap et OnEndMap), xxxChallenge & co et renommage dans tous les plugins.
+		- Deleted RulesScriptCallback, obsolète.
+		- Ajout du path, continent, et country dans la table 'players' lorsqu'un player se connecte.
+
+	- localrecords plugin :
+		- Les maptypes StuntersRacers et StuntersReachScore sont pris en charge TODO: quand stunters, le local ne s'affiche pas correctement
+
+	- vinfo:
+		- Correction du top nations.
+		- Clean du code
+
+	- podium:
+		- Correction du top nations.
+
+	- Changement du callback onMapLoaded par OnMapParameters sur le title et tous les plugins.
+	- Ajout de la method GetMapParameters sur le title, pour l'obtention du MapTimeLimit, etc...
+
+	- Quelques corrections d'erreurs php dans la console: lottery, control.php.
+
+2014-11-12
+	- Début de la nouvelle version du plugin Mx :
+		- Ajout d'une option dans le fichier config pour sélectionner l'ancienne version basée sur le site MX (au cas où le serveur stunters.org plante, ça permet de basculer sur MX)
+		ou la nouvelle version basée sur le site stunters.org.
+
+	- Nettoyage du plugin vinfo (pas terminé, le renommer)
+
+
+2014-11-13
+	- Modification du xml et nouvelle rubric: http://xml.stunters.org/?rubric=allmaps
+		- Pour rappel http://xml.stunters.org/?rubric=maps est uniquement pour les maps solo et ne comprend que les maps faites sur le title Stunts

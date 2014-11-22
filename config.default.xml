@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FoxControl_config>
+	<!-- Essential settings to run Stunts Control -->
+
+				<!-- Your TM-Login to be the Superadmin when starting Stunts Control the first time -->
+
+	<serverlogin>SuperAdmin</serverlogin> 			<!-- Login of your Dedicated Server Account from https://player.maniaplanet.com -->
+	<serverpw>SuperAdmin</serverpw>					<!-- Password of your Dedicated Server Account -->
+	<serverIP>127.0.0.1</serverIP>					<!-- IP of your Dedicated Server. If hosted on the same host as FoxControl, set it to 127.0.0.1 -->
+	<port>5000</port>                        		<!-- XmlRcp Port of your Dedicated Server -->
+	<SuperAdminPW>SuperAdmin</SuperAdminPW>			<!-- SuperAdmin Password of your Dedicated Server -->
+	<nation>French</nation>                  		<!-- Nation of your Servers location -->
+	<ServerLocation>Europe/Paris</ServerLocation> 	<!-- Set your Server location. All available locations can be found here: http://php.net/manual/en/timezones.php -->
+
+	<!-- Database Settings for Stunts Control -->
+	<db_path>localhost</db_path>					<!-- Database Server - usually 'localhost' (without the apostrophes) -->
+	<db_user>dbuser</db_user>						<!-- Database Username -->
+	<db_passwd>dbpassword</db_passwd>				<!-- Database Password -->
+	<db_name>dbname</db_name>						<!-- Database Name -->
+
+	<!-- Name Settings -->
+	<name_superadmin>Superadmin</name_superadmin> 	<!-- Name which will be displayed on the Server for Usergroup 'Superadmin' -->
+	<name_admin>Admin</name_admin>                	<!-- Name which will be displayed on the Server for Usergroup 'Admin' -->
+	<name_operator>Operator</name_operator>       	<!-- Name which will be displayed on the Server for Usergroup 'Operator' -->
+		
+	<!--Basic Settings -->
+	<text_false_rights>You don't have the required admin rights to do that!</text_false_rights> <!-- Text wich will be displayed on the Server, if someone has false rights -->
+
+	<startwindow>true</startwindow> <!-- Displaying a startwindow when connecting on the server. True = true; False = false -->
+	<startwindowtext>Hello {player} !{newline}This Server is running with FoxControl $o$f51V$fffersion Stunters.{newline}$oSite:$l[Stunters.org]$fff$iStunters.org$l {newline}$oManialink:$h[Stunters]$fff$iStunters$h {newline}Have fun on {server} !</startwindowtext> <!-- Text wich will be displayed in the startwindow -->
+		
+	<player_message_connect>true</player_message_connect> <!-- Displaying a message when a Player connects. True = true; False = false -->
+	<player_message_left>true</player_message_left> <!-- Displaying a message when a Player leaves. True = true; False = false -->
+	
+	<message_connect>$06f»$fff{rank} $fff{nickname} $z$s$06ffrom $fff{path} $06fconnected! Ladder: $fff{ladder}</message_connect>
+	<message_left>$06f»$fff{rank} $fff{nickname}$z$s$06f left the game!</message_left>
+
+	<!-- Autosave Matchsettings -->
+	<autosave_matchsettings>0</autosave_matchsettings> 			<!-- Set here the number of rounds after that the Matchsettings should be automatically saved. 0 = false -->
+	<matchsettings_filename>	servermaps.txt</matchsettings_filename>	<!-- Name of your Matchsettings file in /UserData/Maps/MatchSettings -->
+	
+	<!-- Style Settings -->
+	<default_color>$f51</default_color>
+	<color_kick>$f90</color_kick>
+	<color_warn>$f90</color_warn>
+	<color_ban>$f90</color_ban>
+	<color_unban>$f90</color_unban>
+	<color_forcespec>$f90</color_forcespec>
+	<color_ignore>$f90</color_ignore>
+	<color_setpw>$f90</color_setpw>
+	<color_newservername>$f90</color_newservername>
+	<color_newadmin>$0f0</color_newadmin>
+	<color_removeadmin>$f90</color_removeadmin>
+	<color_join>$07b</color_join>
+	<color_left>$07b</color_left>
+	<color_op_connect>$f00</color_op_connect>
+	<color_admin_connect>$f00</color_admin_connect>
+	<color_superadmin_connect>$f00</color_superadmin_connect>
+	<color_newchallenge>$0d0</color_newchallenge>
+
+	<!-- Window Style -->
+	<default_bgcolor>1919194d</default_bgcolor> 
+    <default_bgcolorfocus>1919194d</default_bgcolorfocus> 
+	
+	
+	<default_style1>Bgs1InRace</default_style1> 			<!-- Default Widget Style 1 (Blue boxes) -->
+	<default_substyle1>BgCardList</default_substyle1> 	<!-- Default Widget Substyle 1 (Blue boxes) -->
+	<default_style2>BgsPlayerCard</default_style2> 			<!-- Default Widget Style 2 (Black boxes) -->
+	<default_substyle2>ProgressBar</default_substyle2> 		<!-- Default Widget Substyle 2 (Black boxes) -->
+	<default_image>http://ahp.li/8368227da2a89fc872ef.jpg</default_image> 
+	<default_window_style>BgsPlayerCard</default_window_style>		<!-- Default Window Style -->
+	<default_window_substyle>ProgressBar</default_window_substyle>	<!-- Default Window Substyle -->
+	
+
+																		 
+	<!-- Widget Settings -->
+	
+	<default_scoretable_enabled>true</default_scoretable_enabled> <!-- Enable default scoretable? True = true, False = false -->
+	
+</FoxControl_config>

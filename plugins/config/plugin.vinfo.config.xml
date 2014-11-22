@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vinfo_config>
+	<!-- Settings for Plugin vinfo -->
+	
+	<pstats>1</pstats> 	<!--show? : 1=True / 0=False -->
+	<pstatsx>-157.6</pstatsx> <!-- x-position -->
+	<pstatsy>63</pstatsy>	<!-- y-position -->	
+	
+	<!-- Visitors, Nations -->
+	<cstats>1</cstats>	<!--show? : 1=True / 0=False -->
+	<cstatsx>0</cstatsx>	<!-- x-position -->
+	<cstatsy>0</cstatsy> 	<!-- y-position -->
+	
+	<!-- Maps -->
+	<mstats>1</mstats>	<!--show? : 1=True / 0=False -->
+	<mstatsx>0</mstatsx>	<!-- x-position -->
+	<mstatsy>0</mstatsy> 	<!-- y-position -->
+	
+	<!-- Show when ? 1=True 0=False-->
+	<showingame>1</showingame>
+	<showendround>1</showendround>
+</vinfo_config>

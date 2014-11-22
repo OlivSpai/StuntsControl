@@ -1,0 +1,14 @@
+<plugin_infomessage>
+	<general>
+		<duration>4</duration> <!-- Set here the number of rounds after that a message will appear -->
+	</general>
+
+	<messages>
+		<message>Type in $i/help$i to get a list of all available commands</message>
+		
+		<message>To get a list of tracks without a record, type in $i/norank$i</message>
+		<message>Have a look at the top donators, top Scores bonus! $i/topdons$i $i/topdbonus$i</message>
+		
+		
+	</messages>
+</plugin_infomessage>
