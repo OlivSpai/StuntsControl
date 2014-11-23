@@ -202,5 +202,8 @@ class FoxControlPlugin {
 	public function getCurrentGameMode() {
 		return $this->instance()->getGameMode();
 	}
+	public function Map() {
+		return $this->instance()->CurrentMap;
+	}
 }
 ?>

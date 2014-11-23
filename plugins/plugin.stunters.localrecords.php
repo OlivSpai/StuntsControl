@@ -1323,14 +1323,14 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 	public function SendLocalRecordsTable()
 	{
 		$HeaderHeight = 5.0;
-		$CellHeight = 4.5;
+		$CellHeight = 4;
 		$PosY = 0.0;
 		$Width = 40.0;
 	
 		if ($this->stringToBool($this->config->show_widget))
-		{		
+		{	
 			// Request records from database
-			if ($this->CurrentMap["MapType"] == 'Stunters') $sql = 'SELECT records.score, records.time, players.nickname FROM records LEFT JOIN players ON records.playerlogin=players.playerlogin WHERE challengeid="'.$this->MapUId.'" ORDER BY score DESC LIMIT '.$this->config->max_records_to_display;
+			if ($this->Map()["MapType"] == 'Stunters') $sql = 'SELECT records.score, records.time, players.nickname FROM records LEFT JOIN players ON records.playerlogin=players.playerlogin WHERE challengeid="'.$this->MapUId.'" ORDER BY score DESC LIMIT '.$this->config->max_records_to_display;
 			else  $sql = 'SELECT records.score, records.time, players.nickname FROM records LEFT JOIN players ON records.playerlogin=players.playerlogin WHERE challengeid="'.$this->MapUId.'" ORDER BY time ASC LIMIT '.$this->config->max_records_to_display;
 			$reqScore = mysqli_query($this->db, $sql);
 			$numRows = $reqScore->num_rows;
@@ -1376,13 +1376,13 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 					$ml .= '<label posn="6 '.($PosY-($CellHeight/2)).'" sizen="'.($Width-5-7.5).'" text="'.htmlspecialchars($resScore['nickname']).'" style="'.$this->config->nickname_style.'" scale="'.$this->config->nickname_scale.'" valign="center2" />';
 					
 					// Score
-					if ($this->CurrentMap["MapType"] == 'Stunters') $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="8" text="$fff$s'.$resScore['score'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
+					if ($this->Map()["MapType"] == 'Stunters') $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="8" text="$fff$s'.$resScore['score'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
 					else  $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="8" text="$fff$s'.$resScore['time'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
 					$counter++;
 					$PosY -= $CellHeight;
 				}
 				
-				$ml .= '<quad id="DragQuad" sizen="40 '.-$PosY.'" posn="0 0 -2" bgcolor="'.$this->config->window_color.'"  scriptevents="1" />';
+				$ml .= '<quad id="DragQuad" sizen="40 '.-$PosY.'" posn="0 0 -2" bgcolor="'.$this->config->window_color.'" bgcolorfocus="'.$this->config->window_colorfocus.'"  scriptevents="1" />';
 			}
 		
 			$ml .= '</frame>';

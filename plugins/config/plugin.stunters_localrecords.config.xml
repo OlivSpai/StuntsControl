@@ -18,6 +18,7 @@
 		
 	<!-- Widget settings -->	
 	<window_color>1919194d</window_color>
+	<window_colorfocus>0000008d</window_colorfocus>
 	
 	<header_color>1919194d</header_color>
 	
