@@ -1,31 +1,24 @@
-//* Stunters Control Installation
-//* v2.3
-//* Coded by:  matrix142, cyrilw, Libero, Jens
-//* Coded and Designed by Pastis-51, Spaï since v2.3
+Stunts Control Installation
 
-********************
-*****config.xml*****
-********************
+
+--- config.xml
 1. If first install, rename config.default.xml to config.xml
 2. Edit your config.xml like the description in the file.
 
-********************
-*****control.sh*****
-********************
+
+--- control.sh
 1. Open control.sh
 2. Set "cd /home/StuntersControl" to the path where your StuntersControl data is located
 
 
-********************
-*******UPLOAD*******
-******************** 
+--- Upload
 1. Upload all files to your server
    
-********************
-********CHMOD*******
-********************
-1. Set CHMOD 777 to your StuntersControl Folder
-2. Set CHMOD 777 to /var/run/StuntersControl.pid
 
-Start StuntersControl with
+--- chmod
+1. Set chmod 777 to your StuntsControl Folder
+2. Set chmod 777 to /var/run/StuntsControl.pid
+
+
+Start StuntsControl with
 ./control.sh start

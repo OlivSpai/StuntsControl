@@ -68,10 +68,10 @@ class control {
 		//Initialize the config file
 		$settings = array();
 		
-		if(file_exists('config.default.xml')) {
-			$xml = @simplexml_load_file('config.default.xml');
-		} else {
-			console('ERROR: Can\'t read the Config file (config.default.xml)!');
+		if(file_exists('config.xml')) $xml = @simplexml_load_file('config.xml');
+		else
+		{
+			console('ERROR: Can\'t read config.xml file.');
 			exit;
 		}
 		

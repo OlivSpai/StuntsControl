@@ -122,3 +122,6 @@ Changes:
 2014-11-13
 	- Modification du xml et nouvelle rubric: http://xml.stunters.org/?rubric=allmaps
 		- Pour rappel http://xml.stunters.org/?rubric=maps est uniquement pour les maps solo et ne comprend que les maps faites sur le title Stunts
+
+2014-11-22
+	- Dépot du code sur github
