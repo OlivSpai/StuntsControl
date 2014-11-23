@@ -527,6 +527,17 @@ class control {
 		}
 		return $return;
 	}
+		
+	/* Register page action prefix */
+	public function registerPageAction($prefix, $class) {
+		global $plugins_cb;
+		
+		$pluginid = $this->getPluginId($class);
+		
+		if($pluginid === false) return false;
+
+		$plugins_cb[$pluginid][5][] = $prefix;
+	}
 	
 	//GET LIST OF ALL CHAT COMMANDS
 	public function getCommands($commands) {
@@ -1078,9 +1089,16 @@ class control {
 			{
 				if($EventName == 'ManialinkPageAnswer')
 				{
+					/* ml ids */
 					for($i = 0; $i < count($plugins_cb[$value][2]); $i++)
 					{
 						if($plugins_cb[$value][2][$i] == $args[2]) $plugins_cb[$value][0]->$callfunction($args);
+					}
+					
+					/* page actions */
+					for($i = 0; $i < count($plugins_cb[$value][5]); $i++)
+					{						
+						if($plugins_cb[$value][5][$i] == explode(':', $args[2])[0] ) $plugins_cb[$value][0]->$callfunction($args);
 					}
 				}
 				else if($EventName == 'Command')
@@ -1222,10 +1240,6 @@ class control {
 							if(preg_match('/widget:/', $cbdata[2])) {
 								global $widget;
 								$widget->onManialinkPageAnswer($cbdata);
-							}
-							
-							if(preg_match('/mx:/', $cbdata[2])) {
-								echo 'mx';
 							}
 							
 							$this->callEvent('ManialinkPageAnswer', $cbdata);

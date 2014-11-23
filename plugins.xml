@@ -20,7 +20,7 @@
 
 	<plugin>plugin.infomessage.php</plugin>
 	<plugin>plugin.jukebox.php</plugin>
-	<plugin>plugin.stunters.mxinfo.php</plugin>
+	<plugin>plugin.mx.php</plugin>
 	<plugin>plugin.lottery.php</plugin>
 	<plugin>plugin.top.players.php</plugin>	
 	

@@ -77,4 +77,20 @@
 	
 	<default_scoretable_enabled>true</default_scoretable_enabled> <!-- Enable default scoretable? True = true, False = false -->
 	
+	
+<!-- Plugins -->
+	<!-- Mania eXchange Plugin settings -->
+	<mxinfo>		
+		<!-- Path where mX Files should be stored ( Maps/Downloaded/savepath ) only one path !! and this one must end with a  \ -->
+		<savepath>/MX_Stunts/</savepath>
+		
+		<!-- How many maps are displayed ? -->
+		<mx_maps_to_show>20</mx_maps_to_show>
+		
+		<!-- If 1 plugin acquire map list from stunts db else directly on mx site -->
+		<use_stunts_xml>1</use_stunts_xml>
+	</mxinfo>
+	
+	
+	
 </FoxControl_config>

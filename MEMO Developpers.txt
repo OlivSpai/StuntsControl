@@ -125,3 +125,7 @@ Changes:
 
 2014-11-22
 	- Dépot du code sur github
+
+2014-11-23
+	- Le fichier config est maintenant config.xml, le fichier config.default.xml sert de modèle et/ou à la première install.
+	

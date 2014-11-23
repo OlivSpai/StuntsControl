@@ -49,6 +49,13 @@ class FoxControlPlugin {
 			$this->enabled = false;
 		}
 	}
+	public function registerPageAction($prefix) {
+		$this->instance()->registerPageAction($prefix, $this->classname);
+		// if($this->widgetIDs === false) {
+			// console('['.$this->classname.'] Could not register WidgetIDs for '.$this->classname.'! Plugin is now disabled');
+			// $this->enabled = false;
+		// }
+	}
 	public function displayManialink($ml_code, $ml_id, $ml_version = 0, $ml_duration = 0, $ml_closewhenclick = false){
 		$this->instance()->client->query('SendDisplayManialinkPage', '<?xml version="1.0" encoding="UTF-8" ?>
 		<manialink id="'.$ml_id.'" version="'.$ml_version.'">
@@ -120,7 +127,7 @@ class FoxControlPlugin {
 	public function loadConfig() {
 		$classname = str_replace('plugin_', 'plugin.', $this->classname);
 		$filename = $classname.'.config.xml';
-		
+
 		if(file_exists('plugins/config/'.$filename)) {
 			$xml = simplexml_load_file('plugins/config/'.$filename);
 		}else {
@@ -128,6 +135,15 @@ class FoxControlPlugin {
 		}
 		
 		return $xml;
+	}
+	public function getConfig($node = '') {
+				
+		if(file_exists('config.xml')) $xml = simplexml_load_file('config.xml', 'SimpleXMLElement');
+		else return false;
+		
+		if ($xml->$node) return $xml->$node;
+		
+		return false;
 	}
 	public function getPosn($subtree = '') {
 		$gamemode = $this->instance()->getGameMode();
