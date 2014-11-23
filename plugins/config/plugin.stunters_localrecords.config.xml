@@ -47,7 +47,7 @@
 	<!-- Limited time -->
 	<LT_actif>false</LT_actif>	<!-- -->
 	<LT_time>1000</LT_time>	<!-- time in seconds (1 minute  = 60, 1 hour = 3600, 1 day = 86400) -->
-	<LT_entry>$0f0You have $fe0$i$w{time_left}$0f0 to validate</LT_entry>
+	<LT_entry>$0f0You have $fe0$i$w{time_left}$0f0 to validate your records</LT_entry>
 	<LT_lateentry>$w$fff=>$f00You have no more time to validate</LT_lateentry>
 	<LT_toolate>$w$fff=>$f00Sorry, your score wouldn't be counted </LT_toolate>
 	<LT_on>{nickname}$z has enabled limited time</LT_on>
