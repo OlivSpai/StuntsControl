@@ -19,16 +19,14 @@ public $ScoresBonus;
 		// Alter players table for 'Top Catch Me' window
 		mysqli_query($this->db, "ALTER TABLE `players` ADD scorebonusplanets mediumint UNSIGNED NOT NULL");
 		mysqli_query($this->db, "ALTER TABLE `players` ADD scorebonuscount mediumint UNSIGNED NOT NULL");
-		
-		
-		
+				
 		//Load config file (plugin.stunters_scorebonus.config.xml)
-		$this->config = $this->loadConfig();
+		$this->config = $this->getConfig('bonusscore');
 
 		// Get all bonus scores from config file, trim and convert to integer
 		$this->ScoresBonus = explode(",", $this->config->ScoresBonus);
 		foreach($this->ScoresBonus as $id=>$value)
-		{
+		{	
 			$this->ScoresBonus[$id] = intval(trim($value));
 		}
 	}
