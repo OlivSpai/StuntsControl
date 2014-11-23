@@ -54,12 +54,8 @@ Memoire de TMU
 ############
 
 TODO:
-- local records:
-	- Fond fenêtre à revoir
-	- quand stunters map type, le local ne s'affiche pas correctement
 - Server Rank (à finir)
 - http://xml.stunters.org/?rubric=maps : Ajouter une requête 'search'
-- Next page et prev page sur le plug MX, mise en place d'un cache.
 - Ajout d'une class "Page" (ou ML) qui sera, à terme, la remplaçante de la class window:
 	- $ml = new ml("MLId", _X, _Y, _HAllign, _VAlign);
 	- SetSize

@@ -15,7 +15,7 @@
 	<plugin>plugin.norank.php</plugin>
 	<plugin>plugin.vinfo.php</plugin>
 	
-	<plugin>plugin.stunters.scorebonus.php</plugin>
+	<plugin>plugin.bonusscore.php</plugin>
 	<plugin>plugin.catchme.php</plugin>
 
 	<plugin>plugin.infomessage.php</plugin>

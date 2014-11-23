@@ -220,7 +220,7 @@ class plugin_servermenu extends FoxControlPlugin {
 				$posY -= $lineDistance;
 			}
 			
-			if ($this->instance()->pluginIsActive("plugin.stunters.scorebonus.php"))
+			if ($this->instance()->pluginIsActive("plugin.bonusscore.php"))
 			{
 				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sBonus Scores" />';
 				$ml .= '<quad posn="22 '.$posY.' 0" sizen="30 5" halign="center" valign="center" bgcolor="030" bgcolorfocus="996c" action="'.$this->mlids[22].'" />';
