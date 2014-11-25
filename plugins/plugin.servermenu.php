@@ -92,7 +92,7 @@ class plugin_servermenu extends FoxControlPlugin {
 		$ml = '		
 		<manialink id="StuntsControlServerMenu" name="SC:ServerMenu" version="1">
 		
-		<frame posn="142.5 -40">
+		<frame id="BtnFrame" posn="142.5 -40">
 			<quad id="ServerMenuBtn" posn="0 0 -1" sizen="30 6" halign="center" valign="center" bgcolor="1919194d" bgcolorfocus="000c" scriptevents="1" />
 			<label posn="0 0" sizen="28" textprefix="$ddd" text="SERVER MENU" textfont="Stunts/XBall" halign="center" valign="center2" />
 		</frame>
@@ -319,9 +319,12 @@ class plugin_servermenu extends FoxControlPlugin {
 		{
 			declare AnimateMenuIn = False;
 			declare AnimateMenuOut = False;			
-			declare ServerMenuWindow <=> (Page.GetFirstChild("ServerMenuWindow") as CMlFrame);
-			declare ServerMenuBtn <=> (Page.GetFirstChild("ServerMenuBtn") as CMlQuad);
-						
+			declare ServerMenuWindow 	<=> (Page.GetFirstChild("ServerMenuWindow") as CMlFrame);
+			declare BtnFrame 			<=> (Page.GetFirstChild("BtnFrame") 		as CMlFrame);
+			declare ServerMenuBtn 		<=> (Page.GetFirstChild("ServerMenuBtn") 	as CMlQuad);
+			
+			declare CUIConfig::EUISequence PrevUISequence = CUIConfig::EUISequence::None;
+			
 			while(True)
 			{
 				yield;
@@ -353,7 +356,13 @@ class plugin_servermenu extends FoxControlPlugin {
 						ServerMenuWindow.RelativePosition.X = 160.;
 						AnimateMenuOut = False;
 					}					
-				}					
+				}
+
+				if(PrevUISequence != UI.UISequence)
+				{
+					BtnFrame.Visible = !(UI.UISequence == CUIConfig::EUISequence::Podium);
+					PrevUISequence = UI.UISequence;
+				}
 			}
 		}
 		--></script>
