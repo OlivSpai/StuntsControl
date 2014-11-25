@@ -3,10 +3,6 @@
 //* Version:   0.5
 //* Coded by:  cyrilw, matrix142
 //* Copyright: FoxRace, http://www.fox-control.de
-//* Version: 0.6
-//* Pastis-51
-//* 2014.11.09
-//* change style windows
 
 global $chall_restarted_admin;
 $chall_restarted_admin = false;
@@ -47,6 +43,7 @@ class chat_admin extends FoxControlPlugin {
 		$this->registerCommand('chatnick', 'Chat with an others Nickname. /chatnick <login> <message>', true);
 		//$this->registerCommand('update', 'Updates FoxControl to the newest version', true);
 		$this->registerCommand('callvote', 'Set Timeout for Callvotes. $i/callvote <timeout_in_seconds>$i', true);
+		$this->registerCommand('mixmap', 'Mix the Maplist. $i/mixmap$i', true);
 		
 		$this->registerMLIds(1);
 		
@@ -877,6 +874,18 @@ class chat_admin extends FoxControlPlugin {
 					}
 				}
 			} else $this->sendError($CommandAuthor['Login']);
+
+		//MIX MAP LIST
+		} else if($args[2] == 'mixmap') {
+console('mixmap:');
+			if($mixMap == true) {
+				//$this->instance()->client->query('GetDetailedPlayerInfo', $args[3][0]);
+				//$playerInfo = $this->instance()->client->getResponse();
+console('matchsettings_filename: '.$settings['matchsettings_filename']);				
+				$this->instance()->client->query('LoadMatchSettings', 'MatchSettings/'.$settings['matchsettings_filename']);
+				$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s '.$settings['Color_ForceSpec'].'mixed the maplist $fff');
+			}
+			
 		}
 	}
 	public function onBeginMap($args) {
