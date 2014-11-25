@@ -58,7 +58,7 @@ class plugin_challenges extends FoxControlPlugin {
 				}else {
 					$jukedchallenge = $this->challenges[$jukedchallengex];
 				}
-				plugin_jukebox::jukeChallenge($jukedchallenge['FileName'], $args[1], true);
+				$this->getPluginInstance('plugin_jukebox')->jukeChallenge($jukedchallenge['FileName'], $args[1], true);
 			}
 		//DELETE TRACK
 		
