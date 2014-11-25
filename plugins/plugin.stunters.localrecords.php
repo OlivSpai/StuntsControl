@@ -217,6 +217,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			case 'gettime':
 				$this->display_time($login,$args);
 				break;
+			case 'reset':
 			case 'reinit':
 				// commands are only for SuperAdmin
 				if ($rights_level == 3)

@@ -71,6 +71,7 @@
 		<on>Enable the limited time</on>
 		<off>Disable the limited time</off>
 		<reinit>Reset the table. recs: the records, time: the time played, all: records and time</reinit>
+		<reset>Reset the table. recs: the records, time: the time played, all: records and time</reset>
 		<get>Get the timeout value</get>
 		<set>Set a new timeout. /lt set new_value</set>
 		<save>Save the configuration</save>
