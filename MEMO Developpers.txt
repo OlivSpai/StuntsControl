@@ -54,6 +54,8 @@ Memoire de TMU
 ############
 
 TODO:
+- Lorsque le serveur maniaplanet est lancé et que le control est lui aussi lancé la première fois, les boutons (/maplist etc) du control ne marchent pas.
+- Vérifier que les données du fichier config.default.xml soient bien présentes sur le fichier config.xml
 - Server Rank (à finir)
 - http://xml.stunters.org/?rubric=maps : Ajouter une requête 'search'
 - Ajout d'une class "Page" (ou ML) qui sera, à terme, la remplaçante de la class window:
@@ -125,3 +127,6 @@ Changes:
 2014-11-23
 	- Le fichier config est maintenant config.xml, le fichier config.default.xml sert de modèle et/ou à la première install.
 	
+2014-11-25
+	- Le bouton "server menu" est maintenant caché pendant le podium.
+	- Correction de divers bugs.

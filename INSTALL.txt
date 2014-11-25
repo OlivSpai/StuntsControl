@@ -2,13 +2,13 @@ Stunts Control Installation
 
 
 --- config.xml
-1. If first install, rename config.default.xml to config.xml
+1. If first install, copy config.default.xml to config.xml
 2. Edit your config.xml like the description in the file.
 
 
 --- control.sh
 1. Open control.sh
-2. Set "cd /home/StuntersControl" to the path where your StuntersControl data is located
+2. Set "cd /home/StuntsControl" to the path where your StuntsControl data is located
 
 
 --- Upload

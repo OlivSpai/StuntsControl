@@ -404,7 +404,7 @@ class control {
 			$this->client->query('GetCurrentMapInfo');
 			$this->CurrentMap = $this->client->getResponse();
 			$this->CurrentMap["MapType"] = explode('\\', $this->CurrentMap["MapType"])[1];
-			
+
 			/* GetMapProperties */
 			$this->client->query('TriggerModeScriptEvent', "GetMapParameters", "");
 			
@@ -1203,8 +1203,8 @@ class control {
 				foreach($calls as $call) {
 					$cbname = $call[0];
 					$cbdata = $call[1];
-					
-					// print_r($cbname);
+
+					// echo $cbname.PHP_EOL;
 					// print_r($cbdata);
 					
 					//$this->client->query('ChatSendServerMessage', $cbname);
