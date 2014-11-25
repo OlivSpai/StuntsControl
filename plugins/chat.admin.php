@@ -874,12 +874,10 @@ class chat_admin extends FoxControlPlugin {
 						$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set CallVote Timeout to $fff'.$args[3][0].' $f90seconds!', 'f90');
 					} else {
 						$this->chat('$f90Plugin not activated!');
-						// test oliv2
 					}
 				}
-			} else $this->sendError($CommandAuthor['Login']);
-			
-			// test oliv
+			} else $this->sendError($CommandAuthor['Login']);			
+
 		}
 	}
 	public function onBeginMap($args) {
