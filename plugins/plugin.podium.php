@@ -215,7 +215,7 @@ class plugin_podium extends FoxControlPlugin {
 		$widget_code = $widget_code_topdonate.$widget_code_topbet.$widget_code_topnation.$widget_code_mostactive.$code_topdonate.$code_topbet.$code_topnation.$code_mostactive;
 		$this->displayManialink($widget_code, $this->mlids[0]);
 	}
-	public function onBeginMap($args) {	
+	public function onBeginMatch() {	
 		$this->closeMl($this->mlids[0]);
 	}
 }
