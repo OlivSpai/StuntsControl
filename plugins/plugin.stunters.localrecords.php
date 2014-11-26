@@ -1262,7 +1262,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		$window->init();
 		
 		// Window title
-		$windowTitle = '$070S$ffferver $070R$fffanking';
+		$windowTitle = '$070S$ffferver $070P$fffoints';
 		$window->title($windowTitle);
 		
 		// Window settings
@@ -1270,11 +1270,11 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		// $window->fontSize(1.5);
 		if ($this->stringToBool($this->config->LT_actif))
 		{
-			$window->size(90, '');
+			$window->size(75, '');
 		}
 		else
 		{
-			$window->size(70, '');
+			$window->size(60, '');
 		}
 		$window->posY('37');
 		$window->target('onPages', $this);
@@ -1287,7 +1287,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		// Window header
 		//$window->content('<td width="5">$iRank</td><td width="35">$iNickName</td><td width="15">$iLogin</td><td width="15">$iPoints</td>');
 		
-		$windowContent = '<td width="5">$iRank</td><td width="35">$iNickName</td><td width="15">$iLogin</td><td width="15">$iPoints</td>';
+		$windowContent = '<td width="5">$iRank</td><td width="28">$iNickName</td><td width="15">$iLogin</td><td width="8">$iPoints</td>';
 		if ($this->stringToBool($this->config->LT_actif))
 		{
 			$windowContent .= '<td width="10">$iTimePlayed</td>';
@@ -1300,12 +1300,12 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		{
 			$windowContent = "";
 			$windowContent .= '<td width="5">'.$rank.'</td>';
-			$windowContent .= '<td width="35">'.htmlspecialchars($playersNickName[$playerLogin]).'</td>';
+			$windowContent .= '<td width="28">'.htmlspecialchars($playersNickName[$playerLogin]).'</td>';
 			$windowContent .= '<td width="15">'.$playerLogin.'</td>';
-			$windowContent .= '<td width="15">'.$players[$playerLogin].'</td>';
+			$windowContent .= '<td width="8">'.$players[$playerLogin].'</td>';
 			if ($this->stringToBool($this->config->LT_actif))
 			{
-				$windowContent .= '<td width="10">'.$this->time_played($playerLogin).'</td>';
+				$windowContent .= '<td width="10">$ff0'.$this->time_played($playerLogin).'</td>';
 				$windowContent .= '<td width="10">'.($this->config->LT_time - $this->time_played($playerLogin)).'</td>';
 			}
 			$window->content($windowContent);
