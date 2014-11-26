@@ -63,8 +63,8 @@ class plugin_servermenu extends FoxControlPlugin {
 	        case $this->mlids[11]: $this->getPluginInstance('chat_admin')->onCommand( array(1 => $login, 2 => 'reboot') ); break;
 			case $this->mlids[12]: $this->getPluginInstance('manager_plugins')->onCommand( array(1 => $login, 2 => 'plugins') ); break;
 			case $this->mlids[13]: $this->getPluginInstance('chat_admin')->onCommand( array(1 => $login, 2 => 'adminhelp') ); break;		
-		    case $this->mlids[14]: $this->getPluginInstance('plugin_mx')->onCommand( array(1 => $login, 2 => 'mx') ); break;
-			
+			case $this->mlids[14]: $this->getPluginInstance('chat_admin')->onCommand( array(1 => $login, 2 => 'mixmap') ); break;
+			case $this->mlids[15]: $this->getPluginInstance('plugin_mx')->onCommand( array(1 => $login, 2 => 'mx') ); break;	
 	/* TOPS BUTTONS */	
 			case $this->mlids[21]: $this->getPluginInstance('plugin_top_players')->onCommand( array(1 => $login, 2 => 'topbets') ); break;
 			case $this->mlids[22]: $this->getPluginInstance('plugin_top_players')->onCommand( array(1 => $login, 2 => 'topbonus') ); break;
@@ -122,12 +122,12 @@ class plugin_servermenu extends FoxControlPlugin {
 				$posY -= $lineDistance;
 			}
 			
-			if ($this->instance()->pluginIsActive("plugin.stunters.localrecords.php"))
+			/* if ($this->instance()->pluginIsActive("plugin.stunters.localrecords.php"))
 			{
 				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sServer Rank" />';
 				$ml .= '<quad posn="22 '.$posY.' 0" sizen="30 5" halign="center" valign="center" bgcolor="030" bgcolorfocus="996c" action="'.$this->mlids[3].'" />';
 				$posY -= $lineDistance;
-			}	
+			}	            */
 			
 			if ($this->instance()->pluginIsActive("plugin.norank.php"))
 			{	
@@ -187,11 +187,17 @@ class plugin_servermenu extends FoxControlPlugin {
 				$posY -= $lineDistance;
 			}
 			
-			
+			if ($this->instance()->pluginIsActive("chat.admin.php"))
+			{
+				$ml .= '<label posn="12 '.($posY +0.8).' 1" sizen="20 5" halign="center" valign="center" scale="0.9" textfont="Stunts/XBall" text="$sMixed Map" />';
+				$ml .= '<quad posn="12 '.$posY.' 0" sizen="20 4" halign="center" valign="center" bgcolor="300" bgcolorfocus="996c" action="'.$this->mlids[14].'" />';
+				$posY -= $lineDistance;
+			}
+				
 			if ($this->instance()->pluginIsActive("plugin.mx.php"))
 			{
 				$ml .= '<label posn="12 '.($posY +0.8).' 1" sizen="20 5" halign="center" valign="center" scale="0.9" textfont="Stunts/XBall" text="$sM.X" />';
-				$ml .= '<quad posn="12 '.$posY.' 0" sizen="20 4" halign="center" valign="center" bgcolor="300" bgcolorfocus="996c" action="'.$this->mlids[14].'" />';
+				$ml .= '<quad posn="12 '.$posY.' 0" sizen="20 4" halign="center" valign="center" bgcolor="300" bgcolorfocus="996c" action="'.$this->mlids[15].'" />';
 				$posY -= $lineDistance;
 			}
 		
@@ -273,7 +279,7 @@ class plugin_servermenu extends FoxControlPlugin {
 			$lineDistance = 6.5;
 			$posY = 0;
 			
-			$ml .= '<frame posn="0 -130">';
+			$ml .= '<frame posn="0 -135">';
 			{
 				$ml .= '<label posn="22 '.($posY +1).' 3" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sInfo" />';
 				$posY -= $lineDistance;
