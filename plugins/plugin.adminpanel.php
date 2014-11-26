@@ -45,8 +45,8 @@ class plugin_adminpanel extends FoxControlPlugin {
 		if($this->enabled == false) return;
 		if($this->instance()->is_admin($login) == false) return;
 		$ap_mlcode = '
-		<frame posn="-5 -16 0">
-			<quad posn="55.7 -20 0" sizen="8.5 6" halign="center" bgcolor="1919194d" />
+		<frame posn="-5 -14.9 0">
+			<quad posn="55.7 -20 0" sizen="8.45 6" halign="center" bgcolor="1919194d" />
 		
 			
 			
@@ -146,7 +146,7 @@ class plugin_adminpanel extends FoxControlPlugin {
 			if($chatAdmin !== false) {
 				$window = $this->window;
 				$window->init();
-				$window->title('$fffDelete Map');
+				$window->title('$800D$fffelete $800M$fffap');
 				$window->displayAsTable(true);
 				$window->size(30, '');
 				$window->posY('36.8');
