@@ -49,7 +49,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		$this->author = 'Spaï';
 		$this->version = '0.6';
 	
-		$this->registerCommand('srank', 'Shows server average rank', false);
+		//$this->registerCommand('srank', 'Shows server average rank', false);
 		$this->registerCommand('prank', 'Shows server points rank', false);
 		$this->registerCommand('lt', 'Limited Time administration', true);
 	
@@ -548,6 +548,31 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		//$ret[] = 'ago.';
 		return join(' ', $ret);
 	} // end time_elapsed
+
+	function time_elapsed_short($secs)
+	{
+		$bit = array(
+			' y'	=> $secs / 31556926 % 12,
+			' w'	=> $secs / 604800 % 52,
+			' d'	=> $secs / 86400 % 7,
+			' h'	=> $secs / 3600 % 24,
+			' m'	=> $secs / 60 % 60,
+			' s'	=> $secs % 60
+			);
+		   
+		foreach($bit as $k => $v){
+			//if($v > 1) $ret[] = $v . $k . 's';
+			if($v >= 1) $ret[] = $v . $k;
+		}
+		if ($secs == 0)
+		{
+			$ret[] = ' 0 second';
+		}
+		
+		//array_splice($ret, count($ret)-1, 0, 'and');
+		//$ret[] = 'ago.';
+		return join(' ', $ret);
+	} // end time_elapsed_short
 
 	// display if the plugin is active
 	function LT_display_active($login)
@@ -1270,7 +1295,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		// $window->fontSize(1.5);
 		if ($this->stringToBool($this->config->LT_actif))
 		{
-			$window->size(75, '');
+			$window->size(80, '');
 		}
 		else
 		{
@@ -1290,8 +1315,8 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		$windowContent = '<td width="5">$iRank</td><td width="28">$iNickName</td><td width="15">$iLogin</td><td width="8">$iPoints</td>';
 		if ($this->stringToBool($this->config->LT_actif))
 		{
-			$windowContent .= '<td width="10">$iTimePlayed</td>';
-			$windowContent .= '<td width="10">$iTimeLeft</td>';
+			$windowContent .= '<td width="12">$iTimePlayed</td>';
+			$windowContent .= '<td width="12">$iTimeLeft</td>';
 		}
 		$window->content($windowContent);
 		
@@ -1305,8 +1330,8 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			$windowContent .= '<td width="8">'.$players[$playerLogin].'</td>';
 			if ($this->stringToBool($this->config->LT_actif))
 			{
-				$windowContent .= '<td width="10">$ff0'.$this->time_played($playerLogin).'</td>';
-				$windowContent .= '<td width="10">'.($this->config->LT_time - $this->time_played($playerLogin)).'</td>';
+				$windowContent .= '<td width="10">$ff0'.$this->time_elapsed_short($this->time_played($playerLogin)).'</td>';
+				$windowContent .= '<td width="10">'.$this->time_elapsed_short($this->config->LT_time - $this->time_played($playerLogin)).'</td>';
 			}
 			$window->content($windowContent);
 			
