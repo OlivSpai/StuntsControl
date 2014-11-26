@@ -28,4 +28,5 @@ $ignorePlayer = false;
 $update = false;
 $force_map = true;
 $setCallVote = true;
+$mixMap = false;
 ?>
