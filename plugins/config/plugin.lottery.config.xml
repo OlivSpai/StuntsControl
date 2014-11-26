@@ -7,6 +7,6 @@
 <winpotmax>151</winpotmax><!-- maximum Jackpot size in planets -->
 <minplayers>3</minplayers><!-- When does the Lottery start (finishers) -->
 <winpercent>20</winpercent><!-- do not set beyond 0 or above 1 0.25 = 25 % winchance to all players, 1= 100 % (only finishers can win) so it can happen even if there is a win chance of 100 % that nobody wins in a round-->
-<winposy>-83</winposy>
+<winposy>-82.4</winposy>
 <winposx>126.7</winposx><!--do not set beyond 0 or above 1 0.25 = 25 % winchance to all players, 1= 100 % (only finishers can win) so it can happen even if there is a win chance of 100 % that nobody wins in a round-->
 </lottery>
