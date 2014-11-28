@@ -66,6 +66,7 @@ class plugin_servermenu extends FoxControlPlugin {
 			case $this->mlids[14]: $this->getPluginInstance('chat_admin')->onCommand( array(1 => $login, 2 => 'mixmap') ); break;
 			case $this->mlids[15]: $this->getPluginInstance('plugin_mx')->onCommand( array(1 => $login, 2 => 'mx') ); break;	
 	/* TOPS BUTTONS */	
+	        case $this->mlids[20]: $this->getPluginInstance('plugin_cup_time')->onCommand( array(1 => $login, 2 => 'cuptime') ); break;
 			case $this->mlids[21]: $this->getPluginInstance('plugin_top_players')->onCommand( array(1 => $login, 2 => 'topbets') ); break;
 			case $this->mlids[22]: $this->getPluginInstance('plugin_top_players')->onCommand( array(1 => $login, 2 => 'topbonus') ); break;
 			case $this->mlids[23]: $this->getPluginInstance('plugin_top_players')->onCommand( array(1 => $login, 2 => 'topcatchme') ); break;
@@ -219,6 +220,13 @@ class plugin_servermenu extends FoxControlPlugin {
             }
 			
 			/* AJOUTER LES BOUTONS ICI */ 
+			if ($this->instance()->pluginIsActive("plugin.cup.time.php"))
+			{
+				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sCup Time" />';
+				$ml .= '<quad posn="22 '.$posY.' 0" sizen="30 5" halign="center" valign="center" bgcolor="030" bgcolorfocus="996c" action="'.$this->mlids[20].'" />';
+				$posY -= $lineDistance;
+			}
+			
 			if ($this->instance()->pluginIsActive("plugin.nouse.fox.betting.php"))
 			{
 				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sBets" />';
