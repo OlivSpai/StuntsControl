@@ -1330,8 +1330,8 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			$windowContent .= '<td width="8">'.$players[$playerLogin].'</td>';
 			if ($this->stringToBool($this->config->LT_actif))
 			{
-				$windowContent .= '<td width="10">$ff0'.$this->time_elapsed_short($this->time_played($playerLogin)).'</td>';
-				$windowContent .= '<td width="10">'.$this->time_elapsed_short($this->config->LT_time - $this->time_played($playerLogin)).'</td>';
+				$windowContent .= '<td width="12">$cf1'.$this->time_elapsed_short($this->time_played($playerLogin)).'</td>';
+				$windowContent .= '<td width="8">'.$this->time_elapsed_short($this->config->LT_time - $this->time_played($playerLogin)).'</td>';
 			}
 			$window->content($windowContent);
 			
