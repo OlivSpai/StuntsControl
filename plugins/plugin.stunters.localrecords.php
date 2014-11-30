@@ -682,7 +682,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 	// update the connexion time of the players
 	public function onEverySecond()
 	{
-		if ($this->stringToBool($this->config->LT_actif))
+		if ($this->stringToBool($this->config->LT_actif) && $this->instance()->CurrentStatus == 4)
 		{
 			//Get PlayerList
 			$this->instance()->client->query('GetPlayerList', 200, 0);
@@ -1356,12 +1356,13 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		if (!$this->stringToBool($this->config->LT_actif) || !$this->stringToBool($this->config->LT_chrono_ui)) return;
 		
 		$timeLeft = ($this->config->LT_time - $this->time_played($login)) * 1000;
-		echo $login.' Time Left: '.$timeLeft.PHP_EOL;
+
 		$ml = '
-		<manialink id="lt_chrono_ml" version="2" name="SC:LT_Chrono">
-			<frame posn="0 87.5">
-				<quad posn="0 0 -1" sizen="40 4" bgcolor="0006" halign="center" valign="center" />
-				<label id="LT_chrono" halign="center" valign="center2" />
+		<manialink id="lt_chrono_ml" version="2" name="StuntsControl/LT_Chrono">
+			<frame id="LTChronoFrame" posn="0 87.5">
+				<quad posn="0 7.5 -1" sizen="80 50" style="UiSMSpectatorScoreBig" substyle="PlayerJunction" halign="center" valign="center" opacity="0.65" />
+				<label posn="-15" text="Time limit" halign="center" valign="center2" style="TextStaticSmall" translate="1" />
+				<label posn="15" id="LTChronoLabel" textemboss="1" halign="center" valign="center2" scale="0.9" />
 			</frame>
 				
 		<script><!--
@@ -1380,23 +1381,39 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			declare Hours = (_Time / 3600000) % 24;
 
 			// declare Time = FormatInteger(Minutes, 2)^"m"^FormatInteger(Seconds, 2)^"."^FormatInteger(MilliSeconds, 3);
-			declare Time = FormatInteger(Minutes, 2)^"m "^FormatInteger(Seconds, 2);
+			declare Time = FormatInteger(Minutes, 2);
+			if (_Time < 3600000) Time ^= "m "^FormatInteger(Seconds, 2);
 			if (Hours > 0) Time = Hours^"h "^Time;
 			return Time;
 		}
 		
 		main ()
 		{
-			declare CMlLabel LT_chrono <=> (Page.GetFirstChild("LT_chrono") as CMlLabel);
+			declare LTChronoLabel 		<=> (Page.GetFirstChild("LTChronoLabel") 		as CMlLabel);
+			declare LTChronoFrame 	<=> (Page.GetFirstChild("LTChronoFrame")	as CMlFrame);
 			declare StartTime = Now;
-			
+			declare CUIConfig::EUISequence PrevUISequence = CUIConfig::EUISequence::None;
+			declare PrevIsSpectatorMode = !IsSpectatorMode;
 			while(True)
 			{				
 				yield;			
 				
-				if(LT_chrono != Null)
+				if(LTChronoLabel != Null)
 				{
-					LT_chrono.SetText(""^TimeToText2(('.$timeLeft.'-(Now-StartTime))));
+					LTChronoLabel.SetText(""^TimeToText2(('.$timeLeft.'-(Now-StartTime))));
+				}
+				
+				if(PrevUISequence != UI.UISequence)
+				{
+					LTChronoFrame.Visible = !(UI.UISequence == CUIConfig::EUISequence::Podium);
+					LTChronoFrame.Visible = !IsSpectatorMode;
+					PrevUISequence = UI.UISequence;
+				}
+				
+				if (PrevIsSpectatorMode != IsSpectatorMode)
+				{
+					LTChronoFrame.Visible = !IsSpectatorMode;
+					PrevIsSpectatorMode = IsSpectatorMode;
 				}
 			}
 		}
