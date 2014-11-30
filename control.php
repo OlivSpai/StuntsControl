@@ -51,6 +51,7 @@ function console($console) {
 class control {
 	public $playerList = array();
 	public $CurrentMap = array();
+	public $CurrentStatus = 0;
 	public $socket;
 	public $socketAddress;
 	public $socketPort;
@@ -1371,6 +1372,7 @@ class control {
 						
 						//Server Status Changed
 						case 'ManiaPlanet.StatusChanged':
+							$this->CurrentStatus = (int) $cbdata[0];						
 							$this->callEvent('StatusChanged', $cbdata);
 						break;
 						
