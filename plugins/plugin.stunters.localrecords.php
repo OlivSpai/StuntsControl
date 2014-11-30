@@ -85,7 +85,9 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			INDEX (`playerlogin`)
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ";
 		mysqli_query($this->db, $tbl_players);
-
+		
+		// Send lt chrono ui
+		foreach($this->getPlayerList() as $login=>$data) $this->SendLTChrono($login);
 	}
 	
 	public function onModeScriptCallback($args)
@@ -136,6 +138,9 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 				}
 				// Send message
 				$this->instance()->client->query('ChatSendServerMessageToLogin', $message, $login);
+				
+				// Send Chrono UI
+				$this->SendLTChrono($login);
 			} // end foreach $playerlist	
 			
 		} // end if LT_actif
@@ -176,6 +181,9 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			
 			// Send message
 			$this->instance()->client->query('ChatSendServerMessageToLogin', $message, $login);
+			
+			// Send chrono ui
+			$this->SendLTChrono($login);
 		} // endif LT_actif
 
 		// Send local records table when a player connect
@@ -1343,7 +1351,61 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 	}
 	
 	
+	public function SendLTChrono($login = '')
+	{
+		if (!$this->stringToBool($this->config->LT_actif) || !$this->stringToBool($this->config->LT_chrono_ui)) return;
+		
+		$timeLeft = ($this->config->LT_time - $this->time_played($login)) * 1000;
+		echo $login.' Time Left: '.$timeLeft.PHP_EOL;
+		$ml = '
+		<manialink id="lt_chrono_ml" version="2" name="SC:LT_Chrono">
+			<frame posn="0 87.5">
+				<quad posn="0 0 -1" sizen="40 4" bgcolor="0006" halign="center" valign="center" />
+				<label id="LT_chrono" halign="center" valign="center2" />
+			</frame>
+				
+		<script><!--
+		#Include "TextLib"
 	
+		Text TimeToText2(Integer _Time)
+		{
+			if (_Time < 0)
+			{
+				return "???";
+			}
+
+			declare MilliSeconds = _Time % 1000;
+			declare Seconds = (_Time / 1000) % 60;
+			declare Minutes = (_Time / 60000) % 60;
+			declare Hours = (_Time / 3600000) % 24;
+
+			// declare Time = FormatInteger(Minutes, 2)^"m"^FormatInteger(Seconds, 2)^"."^FormatInteger(MilliSeconds, 3);
+			declare Time = FormatInteger(Minutes, 2)^"m "^FormatInteger(Seconds, 2);
+			if (Hours > 0) Time = Hours^"h "^Time;
+			return Time;
+		}
+		
+		main ()
+		{
+			declare CMlLabel LT_chrono <=> (Page.GetFirstChild("LT_chrono") as CMlLabel);
+			declare StartTime = Now;
+			
+			while(True)
+			{				
+				yield;			
+				
+				if(LT_chrono != Null)
+				{
+					LT_chrono.SetText(""^TimeToText2(('.$timeLeft.'-(Now-StartTime))));
+				}
+			}
+		}
+		--></script>
+		';
+		$ml .= '</manialink>';
+		
+		$this->instance()->client->query('SendDisplayManialinkPageToLogin', $login, $ml, 0, False);
+	}
 	
 	
 	public function SendLocalRecordsTable()
@@ -1364,7 +1426,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			$title = "";
 			
 			$ml = '<?xml version="1.0" encoding="UTF-8" ?>';
-			$ml .= '<manialink id="StuntersLocalRecordsTable" version="1">';
+			$ml .= '<manialink id="StuntersLocalRecordsTable" version="1">';			
 			$ml .= '<frame id="Window" posn="'. $this->config->posX .' '. $this->config->posY .' '. $this->config->posZ .'">';
 			
 			// If no records found: display no record value, else display formatted text
@@ -1415,7 +1477,8 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 			
 			// ML Script with movable window and position recorded on player profil
 			$ml .= '<script><!--
-		#Include "TextLib" as TextLib
+		#Include "TextLib"
+		
 		main ()
 		{
 			declare CMlFrame Window <=> (Page.GetFirstChild("Window") as CMlFrame);
@@ -1471,7 +1534,7 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 				else
 				{
 					MoveWindow = False;
-				} 				
+				} 	
 			}
 		}
 	--></script>';
