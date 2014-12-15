@@ -89,9 +89,6 @@ private $useStuntsXml;
 						return;
 					}
 				
-					// Checks if the folder exists. If not, create it.
-					if(!file_exists($trackdir.$savePath)) mkdir($trackdir.$savePath);
-				
 					$filename = $map->login.' '.$mxid.'.Map.Gbx';
 					echo $filename;
 					//Get Map File
@@ -101,6 +98,9 @@ private $useStuntsXml;
 					$this->instance()->client->query('GetMapsDirectory');
 					$trackdir = $this->instance()->client->getResponse();
 					
+					// Checks if the folder exists. If not, create it.
+					if(!file_exists($trackdir.$savePath)) mkdir($trackdir.$savePath);
+
 					$trackdir .= $savePath;					
 					// Checks if the folder exists. If not, create it.
 					if(!file_exists($trackdir)) mkdir($trackdir); 
