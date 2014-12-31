@@ -153,5 +153,22 @@ class plugin_jukebox extends FoxControlPlugin {
 			if($sendChatMessage == true) $this->chat($jukedplayer['NickName'].'$z$s$0e0 juked $fff'.$jukedchallenge['Name'].'$z$s$0f0 !');
 		}
 	}
+	
+	function onPlayerDisconnect($args)
+	{
+		global $jukebox;
+		$login = $args[0];
+console("onPlayerDisconnect args:");
+//var_dump($jukebox);	
+		for($_i = 0; $_i < count($jukebox); $_i++) {
+			if($jukebox[$_i]['login'] == $login) 
+			{
+console('in: '.$login);				
+				$jukebox[$_i]['played'] = 'true';
+			}
+		}
+var_dump($jukebox);	
+		
+	} // end onPlayerDisconnect
 }
 ?>
