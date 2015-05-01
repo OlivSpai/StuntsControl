@@ -43,6 +43,22 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 		$this->MapName = $mapInfo['Name'];	
 	}
 	
+	function TimeToText($time, $withMs = true)
+	{
+		$result = '';
+		$seconds=($time/1000)%60;
+		$minutes=($time/(1000*60))%60;
+		$hours=($time/(1000*60*60))%24;
+
+		if ($hours) $result .= str_pad($hours, 2, "0", STR_PAD_LEFT).'h';
+		if ($minutes) $result .= $minutes.':';
+
+		$result .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
+		
+		if ($withMs) $result .= '.'.str_pad(($time%1000), 3, "0", STR_PAD_LEFT);
+		return $result;
+	}
+
 	public function onStartUp()
 	{	
 		$this->name = 'Stunters Server Records';
@@ -1481,8 +1497,8 @@ class plugin_stunters_localrecords extends FoxControlPlugin {
 					$ml .= '<label posn="6 '.($PosY-($CellHeight/2)).'" sizen="'.($Width-5-7.5).'" text="'.htmlspecialchars($resScore['nickname']).'" style="'.$this->config->nickname_style.'" scale="'.$this->config->nickname_scale.'" valign="center2" />';
 					
 					// Score
-					if ($this->Map()["MapType"] == 'Stunters') $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="8" text="$fff$s'.$resScore['score'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
-					else  $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="8" text="$fff$s'.$resScore['time'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
+					if ($this->Map()["MapType"] == 'Stunters') $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="10" text="$fff$s'.$resScore['score'].'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
+					else  $ml .= '<label posn="'.($Width-1).' '.($PosY-($CellHeight/2)).'" sizen="10" text="$fff$s'.$this->TimeToText($resScore['time'], true).'" textfont="Stunts/XBall" scale="'.$this->config->score_scale.'" halign="right" valign="center2" />';
 					$counter++;
 					$PosY -= $CellHeight;
 				}
