@@ -391,6 +391,17 @@ class control {
 			
 			/* Start up */
 			
+			// wait for non waiting state
+			console('Waiting server...'.nz);
+			$serverStatusTmp = 1;
+			while($serverStatusTmp == 1)
+			{
+				if (!$this->client->query('GetStatus')) die('GetStatus - An error occurred - ' . $this->client->getErrorCode() . ':' . $this->client->getErrorMessage());
+				$serverStatusTmp = $this->client->getResponse()["Code"];
+				sleep(1);
+			}
+			console('Starting control'.nz);
+			
 			// Create Playerlist
 			$this->client->query('GetPlayerList', 200, 0);
 			$playerlist = $this->client->getResponse();			
