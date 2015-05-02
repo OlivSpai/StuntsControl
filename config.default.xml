@@ -29,17 +29,17 @@
 	<startwindow>true</startwindow> <!-- Displaying a startwindow when connecting on the server. True = true; False = false -->
 	<startwindowtext>Hello {player} !{newline}This Server is running with FoxControl $o$f51V$fffersion Stunters.{newline}$oSite:$l[Stunters.org]$fff$iStunters.org$l {newline}$oManialink:$h[Stunters]$fff$iStunters$h {newline}Have fun on {server} !</startwindowtext> <!-- Text wich will be displayed in the startwindow -->
 		
-	<player_message_connect>true</player_message_connect> <!-- Displaying a message when a Player connects. True = true; False = false -->
-	<player_message_left>true</player_message_left> <!-- Displaying a message when a Player leaves. True = true; False = false -->
+	<player_message_connect>true</player_message_connect>				<!-- Displaying a message when a Player connects. True = true; False = false -->
+	<player_message_left>true</player_message_left>						<!-- Displaying a message when a Player leaves. True = true; False = false -->
 	
 	<message_connect>$06f»$fff{rank} $fff{nickname} $z$s$06ffrom $fff{path} $06fconnected! Ladder: $fff{ladder}</message_connect>
 	<message_left>$06f»$fff{rank} $fff{nickname}$z$s$06f left the game!</message_left>
 
 	<!-- Autosave Matchsettings -->
-	<autosave_matchsettings>0</autosave_matchsettings> 			<!-- Set here the number of rounds after that the Matchsettings should be automatically saved. 0 = false -->
-	<matchsettings_filename>	servermaps.txt</matchsettings_filename>	<!-- Name of your Matchsettings file in /UserData/Maps/MatchSettings -->
+	<autosave_matchsettings>0</autosave_matchsettings>					<!-- Set here the number of rounds after that the Matchsettings should be automatically saved. 0 = false -->
+	<matchsettings_filename>servermaps.txt</matchsettings_filename>		<!-- Name of your Matchsettings file in /UserData/Maps/MatchSettings -->
 	
-	<!-- Style Settings -->
+	<!-- Color Settings -->
 	<default_color>$f51</default_color>
 	<color_kick>$f90</color_kick>
 	<color_warn>$f90</color_warn>
@@ -60,23 +60,15 @@
 
 	<!-- Window Style -->
 	<default_bgcolor>1919194d</default_bgcolor> 
-    <default_bgcolorfocus>1919194d</default_bgcolorfocus> 
+    <default_bgcolorfocus>1919194d</default_bgcolorfocus>
 	
-	
-	<default_style1>Bgs1InRace</default_style1> 			<!-- Default Widget Style 1 (Blue boxes) -->
-	<default_substyle1>BgCardList</default_substyle1> 	<!-- Default Widget Substyle 1 (Blue boxes) -->
-	<default_style2>BgsPlayerCard</default_style2> 			<!-- Default Widget Style 2 (Black boxes) -->
-	<default_substyle2>ProgressBar</default_substyle2> 		<!-- Default Widget Substyle 2 (Black boxes) -->
+	<default_style1>Bgs1InRace</default_style1> 							<!-- Default Window Style 1 (Blue boxes) -->
+	<default_substyle1>BgCardList</default_substyle1> 						<!-- Default Window Substyle 1 (Blue boxes) -->
+	<default_style2>BgsPlayerCard</default_style2> 							<!-- Default Window Style 2 (Black boxes) -->
+	<default_substyle2>ProgressBar</default_substyle2> 						<!-- Default Window Substyle 2 (Black boxes) -->
 	<default_image>http://ahp.li/8368227da2a89fc872ef.jpg</default_image> 
-	<default_window_style>BgsPlayerCard</default_window_style>		<!-- Default Window Style -->
-	<default_window_substyle>ProgressBar</default_window_substyle>	<!-- Default Window Substyle -->
-	
-
-																		 
-	<!-- Widget Settings -->
-	
-	<default_scoretable_enabled>true</default_scoretable_enabled> <!-- Enable default scoretable? True = true, False = false -->
-	
+	<default_window_style>BgsPlayerCard</default_window_style>				<!-- Default Window Style -->
+	<default_window_substyle>ProgressBar</default_window_substyle>			<!-- Default Window Substyle -->
 	
 <!-- Plugins -->
 	<!-- Mania eXchange plugin -->
@@ -86,9 +78,6 @@
 		
 		<!-- How many maps are displayed ? -->
 		<mx_maps_to_show>20</mx_maps_to_show>
-		
-		<!-- If 1 plugin acquire map list from stunts db else directly on mx site -->
-		<use_stunts_xml>1</use_stunts_xml>
 	</mxinfo>
 		
 	

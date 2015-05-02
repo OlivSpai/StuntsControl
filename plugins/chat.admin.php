@@ -737,16 +737,18 @@ class chat_admin extends FoxControlPlugin {
 		
 		//SHOW PLAYERLIST FOR ADMINS
 		} else if($args[2] == 'adminplayers') {
-			$this->instance()->show_playerlist($CommandAuthor['Login'], true, 0);
+			$this->instance()->show_playerlist($CommandAuthor['Login'], true, 0);		
+		}
 		
-		//REBOOT FOXCONTROL
-		} else if($args[2] == 'reboot') {
-			if($reboot_script==true){
-				$this->instance()->FoxControl_reboot();
-			} else $this->sendError($CommandAuthor['Login']);
+		/* Reboot StuntsControl */
+		else if($args[2] == 'reboot')
+		{
+			if($reboot_script==true) $this->instance()->Reboot();
+			else $this->sendError($CommandAuthor['Login']);		
+		}
 		
 		//SKIP TRACK
-		} else if($args[2] == 'skip') {
+		else if($args[2] == 'skip') {
 			if($skip_challenge==true){
 				$this->instance()->challenge_skip();
 				$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s $f90skipped the map!', 'f90');
@@ -821,11 +823,11 @@ class chat_admin extends FoxControlPlugin {
 					$version = $content->version;
 					$autoupdate = $content->autoupdate;
 		
-					if(FOXC_VERSION < $version) {
+					if(SC_Version < $version) {
 						if($autoupdate == 'true') {
 							$link = str_replace('&', '&amp;', $content->release_info);
 					
-							$window->content('<td width="25">Your Version: '.FOXC_VERSION.'</td>');
+							$window->content('<td width="25">Your Version: '.SC_Version.'</td>');
 							$window->content('<td width="25">Newest Version: '.$version.'</td>');
 							$window->content('<td ml="'.$link.'" width="48">Check if this link links to the release notes to make sure it\'s an official update!</td>');
 							$window->content('');
@@ -837,7 +839,7 @@ class chat_admin extends FoxControlPlugin {
 						} else {
 							$link = str_replace('&', '&amp;', $content->release_info);
 					
-							$window->content('<td width="25">Your Version: '.FOXC_VERSION.'</td>');
+							$window->content('<td width="25">Your Version: '.SC_Version.'</td>');
 							$window->content('<td width="25">Newest Version: '.$version.'</td>');
 							$window->content('');
 							$window->content('<td width="40">Autoupdate is not possible. Please update manually!</td>');

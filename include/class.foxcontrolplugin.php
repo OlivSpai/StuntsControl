@@ -21,11 +21,11 @@ class FoxControlPlugin {
 	public $version = '';
 	public $permissions = null;
 	public function initFCPluginClass($classn) {
-		global $fc_db, $window, $widget;
+		global $fc_db, $window, $manialink;
 		$this->db = $fc_db;
-		$this->classname = $classn;
+		$this->classname = $classn;		
 		$this->window = $window;
-		$this->widget = $widget;
+		$this->manialink = $manialink;
 		$this->playerList = $this->getPlayerList();
 		//$this->permissions = $this->getPluginInstance('plugin_permissions');
 	}
@@ -39,13 +39,6 @@ class FoxControlPlugin {
 	public function registerCommand($command, $description, $admin) {
 		if($this->instance()->registerCommand($command, $description, $admin, $this->classname) === false) {
 			console('['.$this->classname.'] Could not register command \''.$command.'\'!');
-			$this->enabled = false;
-		}
-	}
-	public function registerWidgets($ids) {
-		$this->widgetIDs = $this->instance()->registerWidget($ids, $this->classname);
-		if($this->widgetIDs === false) {
-			console('['.$this->classname.'] Could not register WidgetIDs for '.$this->classname.'! Plugin is now disabled');
 			$this->enabled = false;
 		}
 	}

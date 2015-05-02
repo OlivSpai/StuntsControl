@@ -1,29 +1,21 @@
 <?php
-// FoxControl
-// Copyright 2010 - 2012 by FoxRace, http://www.fox-control.de
+// Based on FoxControl 2010->2012 by FoxRace, http://www.fox-control.de - Coded by:  matrix142, cyrilw, libero
 
-//* control.php - Main file
-//* Version:   1.2
-//* Coded by:  matrix142, cyrilw, libero
-//* Copyright: FoxRace, http://www.fox-control.de
-//* adaptation Stunters  pastis
-//* Version		2.3
-//* 2013.10.05
-
-// Stunts Control
-// Copyleft 2012 - 2014 by http://stunters.org
+// StuntsControl
+// Source code on GitHub : https://github.com/Spaii/StuntsControl/
+// Copyleft 2012->2015 by http://stunters.org - Momo, Pastis, Spaï
 
 require_once('include/GbxRemote.inc.php');
 
-//DONT CHANGE THIS!
+// Don't change this !
 define('nz', "\r\n");
-define('FOXC_VERSION', 'NewEdition');
-define('FOXC_VERSIONP', 'Version ');
-define('FOXC_BUILD', 'NewEdition');
+define('SC_Version', 'NewEdition');
+define('SC_VersionP', 'Version ');
 
 error_reporting(E_ALL);
 
-function console($console) {
+function console($console)
+{
 	if(trim($console) == '') return;
 	
 	$ct = explode("\n", $console);
@@ -49,26 +41,23 @@ function console($console) {
 }
 
 class control {
-	public $playerList = array();
-	public $CurrentMap = array();
-	public $CurrentStatus = 0;
-	public $socket;
-	public $socketAddress;
-	public $socketPort;
-	private $socketAuthenticated = false;
+	
+	public $playerList 		= array();
+	public $CurrentMap 		= array();
+	public $CurrentStatus 	= 0;
 
-	public function run() {
-		global $control, $settings, $_widgetStyles;
+	public function run()
+	{
+		global $control, $settings;
 		
-		$control = $this;
-		
-		console('Starting Stunts Control');
+		$control 	= $this;
+		$settings 	= array();
+				
+		console('Stunts Control '.SC_Version);
 		
 		$this->client = New IXR_Client_Gbx;
 		
-		//Initialize the config file
-		$settings = array();
-		
+		// Read config file (TODO: php default values)
 		if(file_exists('config.xml')) $xml = @simplexml_load_file('config.xml');
 		else
 		{
@@ -76,91 +65,72 @@ class control {
 			exit;
 		}
 		
-		console('Config file initialized!'.nz);
+		$settings['Port'] 						= $xml->port;
+		$settings['ServerIP'] 					= $xml->serverIP;
+		$settings['ServerPW'] 					= $xml->SuperAdminPW;
+		$settings['ServerLogin'] 				= $xml->serverlogin;
+		$settings['ServerPassword'] 			= $xml->serverpassword;
+		$settings['AdminTMLogin'] 				= $xml->YourTmLogin;
+		$settings['ServerLocation'] 			= $xml->ServerLocation;
+		$settings['Nation'] 					= $xml->nation;
+		$settings['DB_Path'] 					= $xml->db_path;
+		$settings['DB_User'] 					= $xml->db_user;
+		$settings['DB_PW'] 						= $xml->db_passwd;
+		$settings['DB_Name'] 					= $xml->db_name;
+		$settings['Name_SuperAdmin'] 			= $xml->name_superadmin;
+		$settings['Name_Admin'] 				= $xml->name_admin;
+		$settings['Name_Operator'] 				= $xml->name_operator;
+		$settings['ServerName'] 				= $xml->servername;
+		$settings['Text_wrong_rights'] 			= $xml->text_false_rights;
+		$settings['StartWindow'] 				= $xml->startwindow;
+		$settings['Text_StartWindow'] 			= $xml->startwindowtext;
+		$settings['Message_PlayerConnect'] 		= $xml->player_message_connect;
+		$settings['Message_PlayerLeft'] 		= $xml->player_message_left;
+		$settings['message_connect'] 			= $xml->message_connect;
+		$settings['message_left'] 				= $xml->message_left;
+		$settings['Color_Default'] 				= $xml->default_color;
+		$settings['Color_Kick'] 				= $xml->color_kick;
+		$settings['Color_Warn'] 				= $xml->color_warn;
+		$settings['Color_Ban'] 					= $xml->color_ban;
+		$settings['Color_UnBan'] 				= $xml->color_unban;
+		$settings['Color_ForceSpec'] 			= $xml->color_forcespec;
+		$settings['Color_Ignore'] 				= $xml->color_ignore;
+		$settings['Color_SetPW'] 				= $xml->color_setpw;
+		$settings['Color_NewServername'] 		= $xml->color_newservername;
+		$settings['Color_NewAdmin'] 			= $xml->color_newadmin;
+		$settings['Color_RemoveAdmin'] 			= $xml->color_removeadmin;
+		$settings['Color_Join'] 				= $xml->color_join;
+		$settings['Color_Left'] 				= $xml->color_left;
+		$settings['Color_OpConnect'] 			= $xml->color_op_connect;
+		$settings['Color_AdminConnect'] 		= $xml->color_admin_connect;
+		$settings['Color_SuperAdminConnect'] 	= $xml->color_superadmin_connect;
+		$settings['Color_NewChallenge'] 		= $xml->color_newchallenge;
+		$settings['menu_name'] 					= $xml->menu_name;
+		$settings['display_local_recs'] 		= $xml->display_local_recs;
+		$settings['max_local_recs'] 			= $xml->max_local_recs;
+		$settings['chat_locals_number'] 		= $xml->chat_locals_number;
+		$settings['autosave_matchsettings'] 	= $xml->autosave_matchsettings;
+		$settings['matchsettings_filename'] 	= $xml->matchsettings_filename;
+		$settings['default_style1'] 			= $xml->default_style1;
+		$settings['default_substyle1'] 			= $xml->default_substyle1;
+		$settings['default_style2'] 			= $xml->default_style2;
+		$settings['default_substyle2'] 			= $xml->default_substyle2;
+		$settings['default_window_style'] 		= $xml->default_window_style;
+		$settings['default_window_substyle'] 	= $xml->default_window_substyle;	
 		
-		$settings['Port'] = $xml->port;
-		$settings['ServerIP'] = $xml->serverIP;
-		$settings['ServerPW'] = $xml->SuperAdminPW;
-		$settings['ServerLogin'] = $xml->serverlogin;
-		$settings['ServerPassword'] = $xml->serverpassword;
-		$settings['AdminTMLogin'] = $xml->YourTmLogin;
-		$settings['ServerLocation'] = $xml->ServerLocation;
-		$settings['Nation'] = $xml->nation;
-		$settings['DB_Path'] = $xml->db_path;
-		$settings['DB_User'] = $xml->db_user;
-		$settings['DB_PW'] = $xml->db_passwd;
-		$settings['DB_Name'] = $xml->db_name;
-		$settings['socketEnabled'] = $xml->enableSocket;
-		$settings['socketPort'] = $xml->socketPort;
-		$settings['Name_SuperAdmin'] = $xml->name_superadmin;
-		$settings['Name_Admin'] = $xml->name_admin;
-		$settings['Name_Operator'] = $xml->name_operator;
-		$settings['ServerName'] = $xml->servername;
-		$settings['Text_wrong_rights'] = $xml->text_false_rights;
-		$settings['StartWindow'] = $xml->startwindow;
-		$settings['Text_StartWindow'] = $xml->startwindowtext;
-		$settings['Message_PlayerConnect'] = $xml->player_message_connect;
-		$settings['Message_PlayerLeft'] = $xml->player_message_left;
-		$settings['message_connect'] = $xml->message_connect;
-		$settings['message_left'] = $xml->message_left;
-		$settings['Color_Default'] = $xml->default_color;
-		$settings['Color_Kick'] = $xml->color_kick;
-		$settings['Color_Warn'] = $xml->color_warn;
-		$settings['Color_Ban'] = $xml->color_ban;
-		$settings['Color_UnBan'] = $xml->color_unban;
-		$settings['Color_ForceSpec'] = $xml->color_forcespec;
-		$settings['Color_Ignore'] = $xml->color_ignore;
-		$settings['Color_SetPW'] = $xml->color_setpw;
-		$settings['Color_NewServername'] = $xml->color_newservername;
-		$settings['Color_NewAdmin'] = $xml->color_newadmin;
-		$settings['Color_RemoveAdmin'] = $xml->color_removeadmin;
-		$settings['Color_Join'] = $xml->color_join;
-		$settings['Color_Left'] = $xml->color_left;
-		$settings['Color_OpConnect'] = $xml->color_op_connect;
-		$settings['Color_AdminConnect'] = $xml->color_admin_connect;
-		$settings['Color_SuperAdminConnect'] = $xml->color_superadmin_connect;
-		$settings['Color_NewChallenge'] = $xml->color_newchallenge;
-		$settings['UI_ScoreTable'] = $xml->default_scoretable_enabled;
-		$settings['UI_ChallengeInfo'] = $xml->default_challenge_info_enabled;
-		$settings['UI_Notice'] = $xml->notice_enabled;
-		$settings['menu_name'] = $xml->menu_name;
-		$settings['display_local_recs'] = $xml->display_local_recs;
-		$settings['display_live_rankings'] = $xml->display_live_rankings;
-		$settings['max_local_recs'] = $xml->max_local_recs;
-		$settings['chat_locals_number'] = $xml->chat_locals_number;
-		$settings['autosave_matchsettings'] = $xml->autosave_matchsettings;
-		$settings['matchsettings_filename'] = $xml->matchsettings_filename;
-		
-		if(file_exists('config.style.xml')) $xml_config = @simplexml_load_file('config.style.xml');
-		else
-		{
-			console('ERROR: Can\'t read the Config file (config.style.xml)!');
-			exit;
-		}
-		
-		$_widgetStyles = array();
-		
-		$settings['default_style1'] = $xml_config->default_style1;
-		$settings['default_substyle1'] = $xml_config->default_substyle1;
-		$settings['default_style2'] = $xml_config->default_style2;
-		$settings['default_substyle2'] = $xml_config->default_substyle2;
-		$settings['default_window_style'] = $xml_config->default_window_style;
-		$settings['default_window_substyle'] = $xml_config->default_window_substyle;
-		
-		$_widgetStyles[] = array('name' => 'Default', 'style1' => $xml_config->default_style1, 'substyle1' => $xml_config->default_substyle1, 'style2' => $xml_config->default_style2, 'substyle2' => $xml_config->default_substyle2);
-		
-		for($i = 0; isset($xml_config->alt_widgetstyles->style[$i]); $i++) {
-			$_widgetStyles[] = array('name' => $xml_config->alt_widgetstyles->style[$i]->name, 'style1' => $xml_config->alt_widgetstyles->style[$i]->style1, 'substyle1' => $xml_config->alt_widgetstyles->style[$i]->substyle1, 'style2' => $xml_config->alt_widgetstyles->style[$i]->style2, 'substyle2' => $xml_config->alt_widgetstyles->style[$i]->substyle2);
-		}
-		
-		//Timezone
+		console('Config file initialized!'.nz);	
+	
+		// Timezone
 		date_default_timezone_set($settings['ServerLocation']);
 		
-		//If server connection is false
-		if(!$this->connect($settings['ServerIP'], $settings['Port'],  'SuperAdmin', $settings['ServerPW'])) {
+		// If server connection is false
+		if(!$this->connect($settings['ServerIP'], $settings['Port'],  'SuperAdmin', $settings['ServerPW']))
+		{
 			die('ERROR: Connection canceled! Wrong Port, IP or SuperAdmin Password!' . nz); 
-		//Else initialize FoxControl
-		} else {
+		// Else initialize FoxControl
+		}
+		else
+		{
 			$defaultcolor = $settings['Color_Default'];
 			
 			$this->client->query('SetApiVersion', '2013-04-16');
@@ -188,7 +158,7 @@ class control {
 			
 			console('-->Connected!'.nz);
 			
-			/* Creating Databases if not exist */
+			/* Admins */
 			$tbl_admins = "
 				CREATE TABLE IF NOT EXISTS `admins` (
 				`id` smallint(6) NOT NULL AUTO_INCREMENT,
@@ -198,6 +168,7 @@ class control {
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=280 ;";
 			mysqli_query($db, $tbl_admins);
 			
+			/* Karma */
 			$tbl_karma = "
 				CREATE TABLE IF NOT EXISTS `karma` (
 				`challengeid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -207,7 +178,8 @@ class control {
 				`timestamp` int(11) NOT NULL
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 			mysqli_query($db, $tbl_karma);
-
+			
+			/* Players */
 			$tbl_players = "
 				CREATE TABLE IF NOT EXISTS `players` (
 				`id` smallint(6) NOT NULL AUTO_INCREMENT,
@@ -224,6 +196,7 @@ class control {
 			mysqli_query($db, "ALTER TABLE `players` ADD path VARCHAR(255) NOT NULL");
 			mysqli_query($db, "ALTER TABLE `players` ADD connections INT(20) NOT NULL");
 			
+			/* Records */
 			$tbl_records = "
 				CREATE TABLE IF NOT EXISTS `records` (
 				`challengeid` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -234,24 +207,7 @@ class control {
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 			mysqli_query($db, $tbl_records);
 			
-			
-			$tbl_widgets = "
-				CREATE TABLE IF NOT EXISTS `widget_settings` (
-				`playerlogin` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-				`widgetid` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-				`style1` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-				`substyle1` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-				`style2` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-				`substyle2` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-				`posx` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-				`posy` varchar(200) COLLATE utf8_unicode_ci NOT NULL
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-			mysqli_query($db, $tbl_widgets);
-			
-			mysqli_query($db, "ALTER TABLE `widget_settings` ADD defaultPosX VARCHAR(10) NOT NULL");
-			mysqli_query($db, "ALTER TABLE `widget_settings` ADD defaultPosY VARCHAR(10) NOT NULL");
-			
-			
+			/* Maps */
 			$maps_table = 'CREATE TABLE IF NOT EXISTS `maps` (
 		   `Id` smallint UNSIGNED NOT NULL auto_increment,
 		   `UId` varchar(255) NOT NULL default "",
@@ -283,13 +239,11 @@ class control {
 		 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
 			mysqli_query($db, $maps_table);
 			
-			// TODO: in cleaned version
 			// Remove widget_settings table if exist
-			// $db->query("DROP TABLE IF EXISTS `widget_settings`");
+			$db->query("DROP TABLE IF EXISTS `widget_settings`");
 			
 			// Remove vinfo table if exist
-			$db->query("DROP TABLE IF EXISTS `vinfo`");
-			
+			$db->query("DROP TABLE IF EXISTS `vinfo`");			
 			
 			/* Fix bug MostActive time enorm TODO: Correct bug, not patch over bug */
 			$sql = mysqli_query($db, "SELECT playerlogin, timeplayed FROM `players`");
@@ -298,14 +252,15 @@ class control {
 				if($row->timeplayed > 10000000)	mysqli_query($db, "UPDATE `players` SET timeplayed = '0' WHERE playerlogin = '".$row->playerlogin."'");
 			}
 			
-			/* Stop creating Databases */
+		/* Creating DB end */
+		
 		
 			$fc_db = $db;
 			global $FoxControl_Reboot, $FoxControl_Shutdown;
 			$FoxControl_Reboot = false;
 			$FoxControl_Shutdown = false;
 		
-			//Create superadminacc
+			/* Creating SuperAdmin account */
 			if(trim($settings['AdminTMLogin']) != '' AND trim($settings['AdminTMLogin'] != 'YourLogin')) {
 				$sql = mysqli_query($db, "SELECT * FROM admins WHERE playerlogin = '".$settings['AdminTMLogin']."'");
 				if(!$row = $sql->fetch_object()) {
@@ -316,7 +271,7 @@ class control {
 				file_put_contents('config.xml', str_replace('<YourTmLogin>'.$settings['AdminTMLogin'].'</YourTmLogin>', '', $atmlfile));
 			}
 	
-			//Enable callbacks
+			/* Enable callbacks */
 			console('-->Enable Callbacks');
 			if (!$this->client->query('EnableCallbacks', true))
 			{
@@ -327,33 +282,32 @@ class control {
 
 		
 			/* LOAD PLUGINS */
-			global $fc_custom_ui, $fc_active_plugins, $plugins_cb, $fc_mlids, $fc_commands, $fc_widgetids, $events;
+			global $fc_custom_ui, $fc_active_plugins, $plugins_cb, $fc_mlids, $fc_commands, $events;
 		
 			$fc_custom_ui 		= array();
 			$fc_active_plugins 	= array();
 			$plugins_cb 		= array();
 			$fc_mlids 			= 3;
 			$fc_commands 		= array();
-			$fc_widgetids 		= 0;
 			$events 			= array();
 		
 			require_once('./include/class.foxcontrolplugin.php');
 			require_once('./include/class.window.php');
-			require_once('./include/class.widget.php');
+			require_once('./include/class.manialink.php');
 		
 			$pluginclass = 'window';
 			$plugins_cb[] = array(0 => new $pluginclass, 1 => $pluginclass, 2 => array(), 3 => array());
 			$plugins_cb[0][0]->initFCPluginClass($pluginclass);
 			$plugins_cb[0][0]->onInit();
 			
-			$pluginclass = 'widget';
+			$pluginclass = 'manialink';
 			$plugins_cb[] = array(0 => new $pluginclass, 1 => $pluginclass, 2 => array(), 3 => array());
 			$plugins_cb[1][0]->initFCPluginClass($pluginclass);
 			$plugins_cb[1][0]->onInit();
-		
-			global $window, $widget;
-			$window = $plugins_cb[0][0];
-			$widget = $plugins_cb[1][0];
+			
+			global $window, $manialink;
+			$window 	= $plugins_cb[0][0];
+			$manialink 	= $plugins_cb[1][0];
 			
 			/*
 				WRITE EVENTS ARRAY
@@ -452,8 +406,7 @@ class control {
 			}
 			
 			console('-->Plugins loaded!'.nz);
-			$this->client->query('SendHideManialinkPage');
-		
+			$this->client->query('SendHideManialinkPage');		
 			
 			//Call StartUp Event in all Plugins
 			$this->callEvent('StartUp');
@@ -467,34 +420,34 @@ class control {
 				$this->client->query('SetServerName', (string) $settings['ServerName']);
 			}
 		
-			console('Stunts Control Version '.FOXC_VERSION);
+			console('Stunts Control Version '.SC_Version);
 			console('Authors: matrix142, cyrilw, libero, jens, spaii, pastis-51, momo');
 			console('Running on '.$this->rgb_decode($settings['ServerName']));
 			
 			//StartUp Chat message			
-			$this->client->query('ChatSendServerMessage', '$z$fff» $i$s$eeeStunts $f51C$f71o$f93n$fa4t$fb5r$fc6o$fd8l $ff0v'.FOXC_VERSION.' $fffstarted $fff» $af7'.($plugin_id+1).'$fff Plugins loaded.');
-			
-			
-			$this->FoxControl();
+			$this->client->query('ChatSendServerMessage', '$z$fff» $i$s$eeeStunts $f51C$f71o$f93n$fa4t$fb5r$fc6o$fd8l $ff0v'.SC_Version.' $fffstarted $fff» $af7'.($plugin_id+1).'$fff Plugins loaded.');
+						
+			$this->StuntsControl();
 		}
-	}
+	} // Run End
 	
-	/*
-		FUNCTIONS
-	*/
-	
+	/* Functions */	
 	//GET ID OF SPECIFIED PLUGIN
-	public function getPluginId($classname) {
+	public function getPluginId($classname)
+	{
 		global $plugins_cb;
 		
-		for($i = 0; $i < count($plugins_cb); $i++) {
+		for($i = 0; $i < count($plugins_cb); $i++)
+		{
 			if($plugins_cb[$i][1] == $classname) return $i;
 		}
+		
 		return false;
 	}
 	
 	//REGISTER MANIALINK IDS FOR PLUGIN
-	public function registerMLIds($ids, $class) {
+	public function registerMLIds($ids, $class)
+	{
 		global $fc_mlids, $plugins_cb;
 		
 		$pluginid = $this->getPluginId($class);
@@ -502,11 +455,13 @@ class control {
 		if($pluginid === false) return false;
 		
 		$return = array();
-		for($i = 0; $i < $ids; $i++) {
+		for($i = 0; $i < $ids; $i++)
+		{
 			$fc_mlids++;
 			$return[] = $fc_mlids;
 			$plugins_cb[$pluginid][2][] = $fc_mlids;
 		}
+		
 		return $return;
 	}
 	
@@ -523,25 +478,9 @@ class control {
 		return true;
 	}
 	
-	//REGISTER WIDGET IDS FOR PLUGIN
-	public function registerWidget($ids, $class) {
-		global $fc_widgetids, $plugins_cb;
-		
-		$pluginid = $this->getPluginId($class);
-		
-		if($pluginid === false) return false;
-		
-		$return = array();
-		for($i = 0; $i < $ids; $i++) {
-			$fc_widgetids++;
-			$return[] = $fc_widgetids;
-			$plugins_cb[$pluginid][4][] = $fc_widgetids;
-		}
-		return $return;
-	}
-		
 	/* Register page action prefix */
-	public function registerPageAction($prefix, $class) {
+	public function registerPageAction($prefix, $class)
+	{
 		global $plugins_cb;
 		
 		$pluginid = $this->getPluginId($class);
@@ -551,27 +490,33 @@ class control {
 		$plugins_cb[$pluginid][5][] = $prefix;
 	}
 	
-	//GET LIST OF ALL CHAT COMMANDS
-	public function getCommands($commands) {
+	// GET LIST OF ALL CHAT COMMANDS
+	public function getCommands($commands)
+	{
 		global $fc_commands;
 		
 		if($commands == 'all') return $fc_commands;
-		else if($commands == 'player') {
+		else if($commands == 'player')
+		{
 			$array = array();
-			for($i = 0; $i < count($fc_commands); $i++) {
+			for($i = 0; $i < count($fc_commands); $i++)
+			{
 				if($fc_commands[$i][2] === false && $fc_commands[$i][1] !== false) $array[] = $fc_commands[$i];
 			}
 			return $array;
-		} else if($commands == 'admin') {
+		}
+		else if($commands == 'admin')
+		{
 			$array = array();
-			for($i = 0; $i < count($fc_commands); $i++) {
+			for($i = 0; $i < count($fc_commands); $i++)
+			{
 				if($fc_commands[$i][2] === true && $fc_commands[$i][1] !== false) $array[] = $fc_commands[$i];
 			}
 			return $array;
 		}
 	}
 	
-	//CHECK IF PLUGIN IS ACTIVE
+	// CHECK IF PLUGIN IS ACTIVE
 	public function pluginIsActive($pluginName) {
 		global $fc_active_plugins;
 		
@@ -653,7 +598,8 @@ class control {
 	}
 	
 	//PLAYER CONNECT
-	public function playerconnect($connected_player){
+	public function playerconnect($connected_player)
+	{
 		global $db, $settings;
 		
 		$color_join = $settings['Color_Join'];
@@ -684,7 +630,7 @@ class control {
 		}
 		
 		//Send Welcome message to player
-		$this->client->query('ChatSendServerMessageToLogin', '$06f» $fffWelcome '.$this->playerList[$login]['NickName'].'$z$s$fff on '.$servername.$newline.'$z$s$06f» $fffThis Server is running with $f51S$ffftunters$f51C$fffontrol$fff ('.FOXC_VERSION.' )'.$newline.'$06f» $fffHave fun!', $login);  
+		$this->client->query('ChatSendServerMessageToLogin', '$06f» $fffWelcome '.$this->playerList[$login]['NickName'].'$z$s$fff on '.$servername.$newline.'$z$s$06f» $fffThis Server is running with $f51S$ffftunters$f51C$fffontrol$fff ('.SC_Version.' )'.$newline.'$06f» $fffHave fun!', $login);  
 		console('New '.str_replace('$o', '', $player_rank).' ' . $login  . ' connected! IP: '.$this->playerList[$login]['IPAddress'].'');
 		
 		//Get Country
@@ -1138,8 +1084,9 @@ class control {
 		}
 	}
 	
-	//REBOOT FOXCONTROL
-	public function FoxControl_reboot(){
+	/* Reboot StuntsControl */
+	public function Reboot()
+	{
 		global $FoxControl_Reboot;
 		
 		$this->client->query('SendHideManialinkPage');
@@ -1159,10 +1106,8 @@ class control {
 		$this->client->query('NextMap');
 	}
 	
-	/*
-		MAIN LOOP
-	*/
-	public function FoxControl(){
+	/* Main Loop */
+	public function StuntsControl(){
 		global $db, $FoxControl_Reboot, $FoxControl_Shutdown, $settings;
 		
 		$defaultcolor = '07b';
@@ -1170,15 +1115,18 @@ class control {
 		$servername = $this->client->getResponse();
 		$current_time = time();
 	
-		//MAIN LOOP
-		while(true) {			
-			//STOP FOXCONTROL
-			if($FoxControl_Reboot == true || $FoxControl_Shutdown == true) {
+		// Main loop
+		while(true)
+		{			
+			// STOP FOXCONTROL
+			if($FoxControl_Reboot == true || $FoxControl_Shutdown == true)
+			{
 				break;
 			}
 			
 			//EVENT EVERYSECOND
-			if($current_time !== time()) {
+			if($current_time !== time())
+			{
 				$this->callEvent('EverySecond');
 			}
 			
@@ -1225,7 +1173,7 @@ class control {
 					switch($cbname) {
 						//Player Connect
 						case 'ManiaPlanet.PlayerConnect':
-							global $widget;
+							global $manialink;
 							
 							$this->client->query('GetDetailedPlayerInfo', $cbdata[0]);
 							$connectedplayer = $this->client->getResponse();
@@ -1249,9 +1197,9 @@ class control {
 								$window->mlAnswer($cbdata);
 							}
 							
-							if(preg_match('/widget:/', $cbdata[2])) {
-								global $widget;
-								$widget->onManialinkPageAnswer($cbdata);
+							if(preg_match('/manialink:/', $cbdata[2])) {
+								global $manialink;
+								$manialink->onManialinkPageAnswer($cbdata);
 							}
 							
 							$this->callEvent('ManialinkPageAnswer', $cbdata);
@@ -1442,117 +1390,7 @@ class control {
 				}
 			}
 		    
-			/*if(($newc = @socket_accept($this->socket)) !== false) {
-				$this->client->query('ChatSendServerMessage', 'Client '.$newc.' has connected');
-			}*/
-			
-			if($settings['socketEnabled'] == true && ($msgsock = @socket_accept($this->socket)) !== false) {
-				global $db;
-			
-				//console('socket accept');
-				//Send welcome message
-				$msg = "Welcome at FoxControl Telnet";
-				socket_write($msgsock, trim($msg));
-				
-				$token = false;
-				$playerLogin = '';
-				$nickName = '';
-				
-				while($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ)) {
-					//console('socket read');
-					
-					//print('buf = '.$buf);
-					
-					$buf = htmlspecialchars($buf);
-					$action = explode(' ', $buf);
-				
-					//console($buf);
-				
-					if(!$buf = trim ($buf)) {
-						continue;
-					}
-					
-					if($buf == 'quit') {
-						break;
-					}
-					
-					if(trim($action[0]) == 'hello') {
-						$token = uniqid();
-						
-						$playerLogin = trim($action[1]);
-						$nickName = trim(str_replace('{:}', ' ', $action[2]));
-					}
-					
-					if(trim($action[0]) == 'authenticate') {
-						if(trim($action[1]) == $settings['ServerPW']) {
-							if($playerLogin != '' AND $nickName != '') {
-								$this->socketAuthenticated = true;
-								socket_write($msgsock, trim('Authentication successful'));
-							
-								$sql = mysqli_query($db, "SELECT * FROM `players` WHERE playerlogin = '".$playerLogin."'");
-								if($row = $sql->fetch_object()) {
-									$connections = $row->connections;
-									$connections += 1;
-							
-									$sql2 = mysqli_query($db, "UPDATE `players` SET lastconnect = '".time()."', connections = '".$connections."' WHERE playerlogin = '".$playerLogin."'");
-								} else {								
-									$sql2 = mysqli_query($db, "INSERT INTO `players` (playerlogin, nickname, lastconnect, timeplayed, donations, country, connections) VALUES ('".$playerLogin."', '".$nickName."', '".time()."', '0', '0', 'Internet', '1')");
-									$sql3 = mysqli_query($db, "INSERT INTO `admins` (playerlogin, rights) VALUES ('".$playerLogin."', '3')");
-								}
-							} else {
-								socket_write($msgsock, trim('Authentication failed. False playerlogin or nickname'));
-							}
-						} else {
-							$this->socketAuthenticated = false;
-							socket_write($msgsock, trim('Authentication failed'));
-							
-							break;
-						}
-					}
-					
-					/*
-						Actions
-					*/
-					if($this->socketAuthenticated == true && $token != false) {
-						$action[0] == trim($action[0]);
-					
-						//Function
-						if($action[0] == 'function' && isset($action[1])) {
-							$functionName = trim($action[1]);
-							$this->$functionName();
-						}
-						
-						//ChatCommand
-						else if($action[0] == 'chatcommand' && isset($action[1])) {
-							$string = '/';
-						
-							foreach($action as $key => $value) {
-								if($key > 0) {
-									if($key == 1) {
-										$string .= $value;
-									} else {
-										$string .= ' '.$value;
-									}
-								}
-							}
-						
-							if(substr(trim($string), 0, 1) == '/') {
-								$args = explode(' ', trim($string));
-								
-								$this->callEvent('Command', array(0 => 0, 1 => $playerLogin, 2 => str_replace('/', '', $args[0]), 3 => explode(' ', trim(str_replace($args[0], '', trim($string)))), 4 => trim(str_replace(array($args[0], $args[1]), array('', ''), trim($string)))));
-							}
-						}
-					}
-					
-					//console('socket read end');
-				}
-				
-				//console('socket accept end');
-				$this->socketAuthenticated = false;
-				socket_close($msgsock);
-			}
-			
-			//Uncomment this for debugging
+			// Uncomment this for debugging
 			/*if($this->client->isError()) {
 				console('Server error: '.$this->client->getErrorCode().': '.$this->client->getErrorMessage());
 				$this->client->resetError(); 
@@ -1561,29 +1399,21 @@ class control {
 			usleep(100000);
 		}
 		
-		//REBOOT FOXCONTROL
-		if(isset($FoxControl_Reboot)) {
-			if($FoxControl_Reboot == true){
-				if($settings['socketEnabled'] == true) {
-					socket_close($this->socket);
-				}
-			
-				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-					echo exec("control.cmd start");
-				} else {
-					echo exec("sh control.sh start");
-				}
+		// REBOOT FOXCONTROL
+		if(isset($FoxControl_Reboot))
+		{
+			if($FoxControl_Reboot == true)
+			{
+				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') echo exec("control.cmd start");
+				else echo exec("sh control.sh start");
 				
 				die();
 			}
 		}
 		
-		//SHUTDOWN FOXCONTROL
-		if(isset($FoxControl_Shutdown) && $FoxControl_Shutdown == true) {
-			if($settings['socketEnabled'] == true) {
-				socket_close($this->socket);
-			}
-			
+		// SHUTDOWN FOXCONTROL
+		if(isset($FoxControl_Shutdown) && $FoxControl_Shutdown == true)
+		{			
 			die();
 		}
 		

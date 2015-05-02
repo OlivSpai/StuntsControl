@@ -322,7 +322,7 @@ class manager_plugins extends FoxControlPlugin {
 			$this->chat('$fff[$f51P$ffflugin$f51M$fffanager] Restarting $f51S$ffftunters$f51C$fffontrol after '.$activateString.$deactivateString.'..');
 			$window->closeWindow($button[1]);
 			sleep(2);
-			$this->instance()->FoxControl_reboot();
+			$this->instance()->Reboot();
 		}
 		elseif($button[3] == 'Next >>')
 		{

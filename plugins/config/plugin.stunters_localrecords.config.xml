@@ -16,7 +16,7 @@
 	<first_record>$fffYour first record $f51>> $z$fffRank $o{rank} $z$fffwith $o{score} $z$fffon {mapname}</first_record>
 	<new_record>$fffNew personal best $f51>> $z$fffRank $o{rank} $z$fffwith $o{score} $z$0c0(+{score_evolution}) $z$fffon {mapname}</new_record>
 		
-	<!-- Widget settings -->	
+	<!-- Window settings -->	
 	<window_color>1919194d</window_color>
 	<window_colorfocus>0000008d</window_colorfocus>
 	
@@ -46,7 +46,7 @@
 	
 	<!-- Limited time -->
 	<LT_actif>false</LT_actif>	<!-- -->
-	<LT_time>1000</LT_time>	<!-- time in seconds (1 minute  = 60, 1 hour = 3600, 1 day = 86400) -->
+	<LT_time>13000</LT_time>	<!-- time in seconds (1 minute  = 60, 1 hour = 3600, 1 day = 86400) -->
 	<LT_chrono_ui>true</LT_chrono_ui>	<!-- Show/Hide chrono UI (false,true) -->
 	<LT_entry>$0f0You have $fe0$i$w{time_left}$0f0 to validate your records</LT_entry>
 	<LT_lateentry>$w$fff=>$f00You have no more time to validate</LT_lateentry>
