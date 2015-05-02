@@ -6,11 +6,7 @@
 // Copyleft 2012->2015 by http://stunters.org - Momo, Pastis, Spaï
 
 require_once('include/GbxRemote.inc.php');
-
-// Don't change this !
-define('nz', "\r\n");
-define('SC_Version', 'NewEdition');
-define('SC_VersionP', 'Version ');
+require_once('include/defines.php');
 
 error_reporting(E_ALL);
 
@@ -53,7 +49,7 @@ class control {
 		$control 	= $this;
 		$settings 	= array();
 				
-		console('Stunts Control '.SC_Version);
+		console(SC_Name.' '.SC_Version);
 		
 		$this->client = New IXR_Client_Gbx;
 		
@@ -142,11 +138,11 @@ class control {
 			$this->client->query('SendDisplayManialinkPage', '<?xml version="1.0" encoding="UTF-8" ?>
 			<manialink id="1">
 				<quad posn="0 43 0" sizen="30 3" style="Bgs1" halign="center" substyle="NavButton" action="0"/>
-				<label text="$f51S$ffftunts$f51C$fffontrol$z$fff is starting.." halign="center" posn="0 42.7 1" sizen="30 3" />
+				<label text="'.SC_ColoredName.'$fff is starting.." halign="center" posn="0 42.7 1" sizen="30 3" />
 			</manialink>', 0, False);
 			
 			//Insert start message into console
-			console('Stunts Control is now running. PHP '.phpversion().' on '. PHP_OS);
+			console(SC_Name.' is now running with PHP '.phpversion().' on '. PHP_OS);
 			console(nz.'-->Connecting to the database..');
 		
 			//Connect to database
@@ -261,9 +257,11 @@ class control {
 			$FoxControl_Shutdown = false;
 		
 			/* Creating SuperAdmin account */
-			if(trim($settings['AdminTMLogin']) != '' AND trim($settings['AdminTMLogin'] != 'YourLogin')) {
+			if(trim($settings['AdminTMLogin']) != '' AND trim($settings['AdminTMLogin'] != 'YourLogin'))
+			{
 				$sql = mysqli_query($db, "SELECT * FROM admins WHERE playerlogin = '".$settings['AdminTMLogin']."'");
-				if(!$row = $sql->fetch_object()) {
+				if(!$row = $sql->fetch_object())
+				{
 					$sql2 = mysqli_query($db, "INSERT INTO `admins` (id, playerlogin, rights) VALUES ('', '".$settings['AdminTMLogin']."', '3')");
 				}
 	
@@ -281,10 +279,9 @@ class control {
 			else console('-->Callbacks enabled'.nz);
 
 		
-			/* LOAD PLUGINS */
-			global $fc_custom_ui, $fc_active_plugins, $plugins_cb, $fc_mlids, $fc_commands, $events;
+			/* Load plugins */
+			global $fc_active_plugins, $plugins_cb, $fc_mlids, $fc_commands, $events;
 		
-			$fc_custom_ui 		= array();
 			$fc_active_plugins 	= array();
 			$plugins_cb 		= array();
 			$fc_mlids 			= 3;
@@ -309,9 +306,7 @@ class control {
 			$window 	= $plugins_cb[0][0];
 			$manialink 	= $plugins_cb[1][0];
 			
-			/*
-				WRITE EVENTS ARRAY
-			*/
+			/* Write events array */
 			$events['onStartUp'] = array();
 			$events['onEverySecond'] = array();
 			$events['onTick'] = array();
@@ -420,12 +415,12 @@ class control {
 				$this->client->query('SetServerName', (string) $settings['ServerName']);
 			}
 		
-			console('Stunts Control Version '.SC_Version);
+			console(SC_Name.' '.SC_Version);
 			console('Authors: matrix142, cyrilw, libero, jens, spaii, pastis-51, momo');
 			console('Running on '.$this->rgb_decode($settings['ServerName']));
 			
 			//StartUp Chat message			
-			$this->client->query('ChatSendServerMessage', '$z$fff» $i$s$eeeStunts $f51C$f71o$f93n$fa4t$fb5r$fc6o$fd8l $ff0v'.SC_Version.' $fffstarted $fff» $af7'.($plugin_id+1).'$fff Plugins loaded.');
+			$this->client->query('ChatSendServerMessage', '$z$fff» '.SC_ColoredName.' $999'.SC_Version.' $fffstarted $fff» $af7'.($plugin_id+1).'$fff Plugins loaded.');
 						
 			$this->StuntsControl();
 		}
@@ -466,7 +461,8 @@ class control {
 	}
 	
 	//REIGSTER COMMAND FOR PLUGIN
-	public function registerCommand($command, $description, $admin, $class) {
+	public function registerCommand($command, $description, $admin, $class)
+	{
 		global $fc_commands, $plugins_cb;
 		
 		$pluginid = $this->getPluginId($class);

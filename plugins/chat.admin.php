@@ -4,6 +4,8 @@
 //* Coded by:  cyrilw, matrix142
 //* Copyright: FoxRace, http://www.fox-control.de
 
+include_once __DIR__.'/../include/defines.php';
+
 global $chall_restarted_admin;
 $chall_restarted_admin = false;
 
