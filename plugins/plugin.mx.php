@@ -142,28 +142,28 @@ class plugin_mx extends FoxControlPlugin {
 		
 		if ($args[2] == 'mx')
 		{
-			{
-				$ML = $this->manialink;		
-				$ML->init();
+			// {
+				// $ML = $this->manialink;		
+				// $ML->init();
 				
-				$ML->setTableHeaders([
-					"Rank"=>50,
-					"Name"=>25
-				]);
+				// $ML->setTableHeaders([
+					// "Rank"=>50,
+					// "Name"=>25
+				// ]);
 				
-				$ML->addLine([
-					"Line 1 column 1",
-					"Line 1 column 2"
-				]);
+				// $ML->addLine([
+					// "Line 1 column 1",
+					// "Line 1 column 2"
+				// ]);
 				
-				$ML->addLine([
-					"Line 2 column 1",
-					"Line 2 column 2"
-				]);
+				// $ML->addLine([
+					// "Line 2 column 1",
+					// "Line 2 column 2"
+				// ]);
 				
-				$ML->show($args[1]);
-				return;				
-			}			
+				// $ML->show($args[1]);
+				// return;				
+			// }			
 			
 			$posY = 0;
 			$frameInstances = '';
@@ -180,8 +180,10 @@ class plugin_mx extends FoxControlPlugin {
 				<quad id="enviro" data-name="" posn="1 0" sizen="5 5" image="" valign="center2" scriptevents="1" />
 				<quad id="car" data-name="" posn="7 0" sizen="6 5" image="" valign="center2" scriptevents="1" />
 				<label id="maptype" posn="14" sizen="44" valign="center2"/>
-				<label id="name" posn="14" sizen="44" valign="center2" />
+				<label id="name" posn="14" sizen="60" valign="center2" />
+				<label id="login" posn="75" sizen="45" valign="center2"/>
 				<label id="nickname" posn="59" sizen="45" valign="center2"/>
+				<label id="myrank" posn="'.($frameWidth-16).'" sizen="15" halign="right" valign="center2" />
 				<label id="mxid" posn="'.($frameWidth-1).'" sizen="15" halign="right" valign="center2" />									
 			</framemodel>
 			
@@ -248,8 +250,8 @@ class plugin_mx extends FoxControlPlugin {
 			
 			Text GetUrl()
 			{
-				declare url = "http://xmltest.stunters.org/?rubric=allmaps&results='.$mx_maps_to_show.'";	
-				// url	^= "&login=" ^ LocalUser.Login;	TODO: Add &serverlogin= for having maps not played on server (a little bit as norank)
+				declare url = "http://xml.titlepack.net/" ^ LoadedTitle.TitleId ^ "/?rubric=maps&results='.$mx_maps_to_show.'";	
+				url	^= "&interface=multi&&login=" ^ LocalUser.Login;	// TODO: Add &serverlogin= for having maps not played on server (a little bit as norank)
 				foreach(id=>value in Filters) url ^= "&"^id^"="^value;
 				return url;
 			}
@@ -267,8 +269,11 @@ class plugin_mx extends FoxControlPlugin {
 				
 				declare Line <=> DataLines[_LineNumber];
 				(Line.GetFirstChild("mxid") 		as CMlLabel).SetText(_Data["mxid"]);
+				(Line.GetFirstChild("maptype") 		as CMlLabel).SetText(_Data["maptype"]);
 				(Line.GetFirstChild("name") 		as CMlLabel).SetText(_Data["name"]);
+				(Line.GetFirstChild("login") 		as CMlLabel).SetText(_Data["login"]);
 				(Line.GetFirstChild("nickname") 	as CMlLabel).SetText(_Data["nickname"]);
+				(Line.GetFirstChild("myrank") 		as CMlLabel).SetText(_Data["myrank"]);
 				(Line.GetFirstChild("enviro") 		as CMlQuad).ImageUrl = "http://images.stunters.org/ml/" ^ _Data["enviro"] ^ "Icon.png";
 				(Line.GetFirstChild("car") 			as CMlQuad).ImageUrl = "http://images.stunters.org/ml/" ^ _Data["car"] ^ ".jpg";
 				(Line.GetFirstChild("background") 	as CMlQuad).DataAttributeSet("mxid", _Data["mxid"]);
@@ -295,6 +300,8 @@ class plugin_mx extends FoxControlPlugin {
 										"car"=>Node.GetAttributeText("car", ""),
 										"maptype"=>Node.GetAttributeText("maptype", ""),
 										"name"=>Node.GetAttributeText("name", ""),
+										"login"=>Node.GetAttributeText("login", ""),
+										"myrank"=>(Node.GetAttributeText("rank", "") ^ "/" ^ Node.GetAttributeText("ranktotal", "")),
 										"nickname"=>Node.GetAttributeText("nickname", "")
 										]
 									);

@@ -129,7 +129,7 @@ class plugin_top_players extends FoxControlPlugin {
 		
 			public function showTopDons($login) {
 		
-		//Create Window
+		//Create Manialink
 		$window = $this->window;
 		$window->init();
 		
