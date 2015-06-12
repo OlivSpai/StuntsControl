@@ -45,20 +45,13 @@ class plugin_adminpanel extends FoxControlPlugin {
 		if($this->enabled == false) return;
 		if($this->instance()->is_admin($login) == false) return;
 		$ap_mlcode = '
-		<frame posn="-5 -14.9 0">
-			<quad posn="55.7 -20 0" sizen="8.45 6" halign="center" bgcolor="1919194d" />
-		
-			
-			
-			<quad posn="52.55 -19.75 1" sizen="4 3.5" halign="center" style="UIConstruction_Buttons" action="'.$this->mlids[2].'" substyle="Left" />
-			<quad posn="55.55 -19.75 1" sizen="3.5 3.5" halign="center" style="UIConstruction_Buttons" action="'.$this->mlids[3].'" substyle="Reload" />
-			<quad posn="58.55 -19.75 2" sizen="4 3.5" halign="center" style="UIConstruction_Buttons" action="'.$this->mlids[0].'" substyle="Right" />
-			
+		<frame posn="-5 -14.9">
+			<quad posn="55.7 -20 0" sizen="8.45 6" halign="center" bgcolor="1919194d" />		
 			<quad posn="52.55 -23 1" sizen="3 3" halign="center" style="Icons64x64_1" action="'.$this->mlids[5].'" substyle="NotBuddy" />
 			<quad posn="55.55 -22.75 2" sizen="3.5 3.5" halign="center" style="Icons64x64_1" action="'.$this->mlids[4].'" substyle="SliderCursor2" />
-			<quad posn="58.55 -22.85 2" sizen="3.5 3.5" halign="center" style="UIConstruction_Buttons" action="'.$this->mlids[6].'" substyle="Options" />
-			
-			</frame>';
+			<quad posn="58.55 -22.85 2" sizen="3.5 3.5" halign="center" style="UIConstruction_Buttons" action="'.$this->mlids[6].'" substyle="Options" />			
+		</frame>
+		';
 		
 		if($is_end_challenge == true){
 			$ap_mlcode = '
@@ -91,47 +84,9 @@ class plugin_adminpanel extends FoxControlPlugin {
 		else if($rights[0] == 1) require('include/op_rights.php');
 		else if($rights[0] == 2) require('include/admin_rights.php');
 		else if($rights[0] == 3) require('include/superadmin_rights.php');
-		
-		//SKIP
-		if($args[2] == $this->mlids[0]){
-			if($skip_challenge==true){
-				$this->instance()->challenge_skip();
-				$this->chat($rights[1].' $fff'.$Admin['NickName'].'$z$s $f90skipped the map!', 'f90');
-			}
-			else $this->chatToLogin($Admin['Login'], $settings['Text_wrong_rights']);
-		}
-		
-		//FORCE END ROUND
-		elseif($args[2] == $this->mlids[1]){
-			if($force_end_round==true){
-				$this->instance()->client->query('ForceEndRound');
-				$this->chat($rights[1].' $fff'.$Admin['NickName'].'$z$s $f90forced round end!', 'f90');
-			}
-			else $this->chatToLogin($Admin['Login'], $settings['Text_wrong_rights']);
-		}
-		
-		//RESTART
-		elseif($args[2] == $this->mlids[3]){
-			if($restart_challenge==true){
-				global $chall_restarted_admin;
-				$chall_restarted_admin = true;
-				$this->instance()->client->query('RestartMap');
-				$this->chat($rights[1].' $fff'.$Admin['NickName'].'$z$s $f90restarted the map!', 'f90');
-			}
-			else $this->chatToLogin($Admin['Login'], $settings['Text_wrong_rights']);
-		}
-		
-		//REPLAY
-		else if($args[2] == $this->mlids[2]) {
-			$chatAdmin = $this->getPluginInstance('chat_admin');
-			
-			if($chatAdmin !== false) {
-				$chatAdmin->onCommand(array(1 => $args[1], 2 => 'replay'));
-			}	
-		}
-		
+				
 		//CANCEL VOTE
-		elseif($args[2] == $this->mlids[4]){
+		if($args[2] == $this->mlids[4]){
 			if($cancel_vote==true){
 				$this->instance()->client->query('CancelVote');
 				$this->chat($rights[1].' $fff'.$Admin['NickName'].'$z$s $f90canceled vote!', 'f90');
