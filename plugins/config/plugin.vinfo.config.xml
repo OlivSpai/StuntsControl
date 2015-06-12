@@ -11,11 +11,6 @@
 	<cstatsx>0</cstatsx>	<!-- x-position -->
 	<cstatsy>0</cstatsy> 	<!-- y-position -->
 	
-	<!-- Maps -->
-	<mstats>1</mstats>	<!--show? : 1=True / 0=False -->
-	<mstatsx>0</mstatsx>	<!-- x-position -->
-	<mstatsy>0</mstatsy> 	<!-- y-position -->
-	
 	<!-- Show when ? 1=True 0=False-->
 	<showingame>1</showingame>
 	<showendround>1</showendround>

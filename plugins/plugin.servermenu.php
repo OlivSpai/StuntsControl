@@ -53,7 +53,6 @@ class plugin_servermenu extends FoxControlPlugin {
 		{
 		
 	/* Server Map et Rank */
-			case $this->mlids[1]: $this->getPluginInstance('plugin_challenges')->displayList($login); break;
 			case $this->mlids[2]: $this->getPluginInstance('plugin_stunters_localrecords')->SendPointsRankTable($login); break;
 			case $this->mlids[3]: $this->getPluginInstance('plugin_stunters_localrecords')->SendServerRankTableTest($login); break;
 			case $this->mlids[4]: $this->getPluginInstance('plugin_norank')->displayList($login); break;
@@ -108,13 +107,7 @@ class plugin_servermenu extends FoxControlPlugin {
 				$ml .= '<label posn="22 '.($posY +1).' 3" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sRankings" />';
 				$posY -= $lineDistance;
             }
-			if ($this->instance()->pluginIsActive("plugin.challenges.php"))
-			{
-				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sMaps" />';
-				$ml .= '<quad posn="22 '.$posY.' 0" sizen="30 5" halign="center" valign="center" bgcolor="030" bgcolorfocus="996c" action="'.$this->mlids[1].'" />';
-				$posY -= $lineDistance;
-			}
-			
+		
 			if ($this->instance()->pluginIsActive("plugin.stunters.localrecords.php"))
 			{
 				$ml .= '<label posn="22 '.($posY +1).' 1" sizen="30 5" halign="center" valign="center" scale="1.15" textfont="Stunts/XBall" text="$sServer Points" />';

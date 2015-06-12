@@ -23,9 +23,6 @@ Globals:$VINFO
 			Countrstats x,y
 			$Vconfig['cstats'][0]
 			$Vconfig['cstats'][1]
-			Mapstats x,y
-			$Vconfig['mstats'][0]
-			$Vconfig['mstats'][1]
 			unique Players x,y
 			$Vconfig['ustats'][0]
 			$Vconfig['ustats'][1]
@@ -73,10 +70,6 @@ class plugin_Vinfo extends FoxControlPlugin {
 		$Vconfig['pstats'][0]=(int) $settingsXML->pstatsx;
 		$Vconfig['pstats'][1]=(int) $settingsXML->pstatsy;
 		$Vconfig['pstats'][2]= $settingsXML->pstats;
-		//Load Config Mapstats
-		$Vconfig['mstats'][0]=(int) $settingsXML->mstatsx;
-		$Vconfig['mstats'][1]=(int) $settingsXML->mstatsy;
-		$Vconfig['mstats'][2]= $settingsXML->mstats;
 		//Load Config Unique Players
 		$Vconfig['lstats'][0]=(int) $settingsXML->lstatsx ;
 		$Vconfig['lstats'][1]=(int) $settingsXML->lstatsy ;
@@ -139,12 +132,6 @@ class plugin_Vinfo extends FoxControlPlugin {
 			$plugintopnation = $this->getPluginInstance('plugin_top_players');
 			$plugintopnation->onCommand($args);
 		}		
-		elseif ($args[2] == $this->mlids[1])
-		{
-			$args[2]='list';
-			$pluginChallenges = $this->getPluginInstance('plugin_challenges');
-			if ($pluginChallenges != false) $pluginChallenges->onCommand($args);
-		}
 	}
 
 	//show widgets	
@@ -155,16 +142,9 @@ class plugin_Vinfo extends FoxControlPlugin {
 		{
 			$xml='
 			<frame posn="'.$Vconfig['pstats'][0].' '.$Vconfig['pstats'][1].' 0" >
-				<quad  bgcolor="1919194d" bgcolorfocus="000c" posn="25.8 -8.09 0" sizen="13.33 7.5" action="'.$this->mlids[1].'"/>
 				<quad  bgcolor="1919194d" bgcolorfocus="000c" posn="12.46 -8.09 0" sizen="13.33 7.5" action="'.$this->mlids[0].'"/>
 				<quad  bgcolor="1919194d" bgcolorfocus="000c" posn="-0.86 -8.09 0" sizen="13.33 7.5" action="'.$this->mlids[3].'"/>
 				
-				 // Map Info
-				<frame posn="17 -3.5 0" >
-					<label posn="16 -6.2 1" halign="center" valign="center" textfont="Stunts/XBall" text="$cf1'.$Vinfo['Cmaps'].'" scale="0.95" sizen="10 2"/>
-					<label posn="16 -9.5 1" halign="center" valign="center" textfont="Stunts/XBall" text="$FFfMaps" scale="0.85" sizen="18 2"/>
-				</frame>
-				 
 				// Country Stats
 				<frame posn="4 -3.5 0" >
 					<label posn="2 -6.2 1" halign="center" valign="center" textfont="Stunts/XBall" text="$cf1'.count($cstats).'" scale="0.95" sizen="10 2"/>

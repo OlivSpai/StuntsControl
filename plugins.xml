@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <plugins>
 	<plugin>chat.admin.php</plugin> <!-- DO NOT DEACTIVATE THIS! -->
-	<plugin>manager.plugins.php</plugin>
-	
+	<plugin>manager.plugins.php</plugin>	
 	
 	<plugin>chat.format.php</plugin>
 	<plugin>chat.player.php</plugin>
 	<plugin>chat.pm.php</plugin>
 	<plugin>plugin.adminpanel.php</plugin>
 	<plugin>plugin.banlist.php</plugin>
-	<plugin>plugin.challenges.php</plugin>
 	<plugin>plugin.donate.php</plugin>
 	<plugin>plugin.ignorelist.php</plugin>
 	<plugin>plugin.norank.php</plugin>
