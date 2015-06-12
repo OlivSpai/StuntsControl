@@ -32,13 +32,7 @@ public $challenges = array();
 		if($args[2] == $this->mlids[0]) {
 			$this->displayList($args[1]);
 		} else if($args[2] >= $this->mlids[2] && $args[2] <= $this->mlids[26]) {
-			if($this->instance()->pluginIsActive('plugin.jukebox.php') == true) {
-				$challenge_page_id = $this->chall_users[$args[1]];
-				$challenge_page_id = $challenge_page_id*25;
-				$jukedchallengex = ($args[2] - $this->mlids[2]+$challenge_page_id);		
-				$jukedchallenge = $this->challenges[$jukedchallengex];
-				plugin_jukebox::jukeChallenge($jukedchallenge['FileName'], $args[1], true);
-			}
+			// TODO: Add to maps box
 		} else if($args[2] == $this->mlids[1]) $this->closeMl($this->mlids[1], $args[1]);
 	}
 	public function onPages($args) {
@@ -110,8 +104,7 @@ public $challenges = array();
 		for($i = 0; isset($this->challenges[$curr_challid]) && $i <= 24; $i++)
 		{
 			$chall_ml_id = $this->mlids[2] + $i;
-			if($this->instance()->pluginIsActive('plugin.jukebox.php') == true) $window->content('<td width="3">'.($curr_challid + 1).'</td><td width="30" id="'.$chall_ml_id.'">'.htmlspecialchars($this->challenges[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($this->challenges[$curr_challid]['Author']).'</td><td width="1"/><td width="13">'.$this->challenges[$curr_challid]['Environnement'].'</td><td width="1"></td>');
-			else $window->content('<td width="3">$cf1'.($curr_challid + 1).'</td><td width="30">'.htmlspecialchars($this->challenges[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($this->challenges[$curr_challid]['Author']).'</td><td width="1"/><td width="10">'.$this->challenges[$curr_challid]['Environnement'].'</td><td width="1"></td>');
+			$window->content('<td width="3">$cf1'.($curr_challid + 1).'</td><td width="30">'.htmlspecialchars($this->challenges[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($this->challenges[$curr_challid]['Author']).'</td><td width="1"/><td width="10">'.$this->challenges[$curr_challid]['Environnement'].'</td><td width="1"></td>');
 			$curr_challid++;
 		}
 		

@@ -42,26 +42,13 @@ class plugin_challenges extends FoxControlPlugin {
 	public function onMapListModified($args) {
 		if($args[2] == true) $this->writeChallenges();
 	}
-	public function onManialinkPageAnswer($args) {	
+	public function onManialinkPageAnswer($args) {
+		
 		//SHOW CHALLENGELIST
 		if($args[2] == $this->mlids[0]) {
 			$this->displayList($args[1]);
-		//JUKE CHALLENGE
-		}else if($args[2] >= $this->mlids[2] && $args[2] <= $this->mlids[26]) {
-			if($this->instance()->pluginIsActive('plugin.jukebox.php') == true) {
-				$challenge_page_id = $this->chall_users[$args[1]];
-				$challenge_page_id = $challenge_page_id*25;
-				$jukedchallengex = ($args[2] - $this->mlids[2]+$challenge_page_id);
-				
-				if(isset($this->searchWriteChallenges[0])) {
-					$jukedchallenge = $this->searchWriteChallenges[$jukedchallengex];
-				}else {
-					$jukedchallenge = $this->challenges[$jukedchallengex];
-				}
-				$this->getPluginInstance('plugin_jukebox')->jukeChallenge($jukedchallenge['FileName'], $args[1], true);
-			}
-		//DELETE TRACK
-		
+	
+		//DELETE TRACK		
 		}else if($args[2] >= $this->mlids[27] && $args[2] <= $this->mlids[52]) {
 			$challenge_page_id = $this->chall_users[$args[1]];
 			$challenge_page_id = $challenge_page_id*25;
@@ -87,8 +74,10 @@ class plugin_challenges extends FoxControlPlugin {
 				$this->writeChallenges();
 				$this->displayList($args[1]);
 			}
+			
 		}else if($args[2] == $this->mlids[1]) {
 			$this->closeMl($this->mlids[1], $args[1]);
+			
 		}
 	}
 	public function onPages($args) {
@@ -239,18 +228,11 @@ class plugin_challenges extends FoxControlPlugin {
 			}else {
 				//DISPLAY LIST FOR ADMIN
 				if($admin == true) {
-					if($this->instance()->pluginIsActive('plugin.jukebox.php') == true) {
-						$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="25" id="'.$chall_ml_id.'">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="13">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="7">'.$challengesArray[$curr_challid]['Environnement'].'</td><td width="1"></td><td width="7" id="'.$delete_id.'" align="center">$f33Delete</td>');
-					}else {
-						$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="25">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="13">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="7">'.$challengesArray[$curr_challid]['Environnement'].'</td><td width="1"></td><td width="7" id="'.$delete_id.'" align="center">$f33Delete</td>');
-					}
+					$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="25">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="13">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="7">'.$challengesArray[$curr_challid]['Environnement'].'</td><td width="1"></td><td width="7" id="'.$delete_id.'" align="center">$f33Delete</td>');
+				
 				//DISPLAY LIST FOR PLAYER
 				}else {
-					if($this->instance()->pluginIsActive('plugin.jukebox.php') == true) {
-						$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="30" id="'.$chall_ml_id.'">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="10">'.$challengesArray[$curr_challid]['Environnement'].'</td>');
-					}else {
-						$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="30">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="10">'.$challengesArray[$curr_challid]['Environnement'].'</td>');
-					}
+					$window->content('<td width="3">'.($curr_challid + 1).'</td><td width="30">'.htmlspecialchars($challengesArray[$curr_challid]['Name']).'</td><td width="1"/><td width="15">'.htmlspecialchars($challengesArray[$curr_challid]['Author']).'</td><td width="1"/><td width="10">'.$challengesArray[$curr_challid]['Environnement'].'</td>');
 				}
 			}
 			
