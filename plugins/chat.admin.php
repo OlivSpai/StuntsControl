@@ -13,6 +13,7 @@ class chat_admin extends FoxControlPlugin {
 	public $trackdir = 'Downloaded';
 	public $commandsPerPage = 17;
 	public $helpUsers = array();
+	public $scriptSettings;
 	
 	public function onStartUp() {
 		$this->registerCommand('adminhelp', 'Shows the helpwindow for the admin commands.', false);
@@ -39,8 +40,10 @@ class chat_admin extends FoxControlPlugin {
 		$this->registerCommand('mode', 'Sets the game mode to the specified mode. Type in $s/adminhelp mode$s for more details.', true);
 		$this->registerCommand('forcespec', 'Forces a player into Spectator mode.  /forcespec <login>', true);
 		$this->registerCommand('forceplayer', 'Forces a player into Player mode. /forceplayer <login>', true);
+		$this->registerCommand('scriptsettings', 'Set Scriptsettings. $i/scriptsettings$i displays a list of available settings', true);
 		$this->registerCommand('forcemap', 'Sets the specified map as next map and skips current. /forcemap <mapid>', true);
 		$this->registerCommand('chatnick', 'Chat with an others Nickname. /chatnick <login> <message>', true);
+		//$this->registerCommand('update', 'Updates FoxControl to the newest version', true);
 		$this->registerCommand('callvote', 'Set Timeout for Callvotes. $i/callvote <timeout_in_seconds>$i', true);
 		$this->registerCommand('mixmap', 'Mix the Maplist. $i/mixmap$i', true);
 		
@@ -49,6 +52,8 @@ class chat_admin extends FoxControlPlugin {
 		$this->name = 'Admin chat';
 		$this->author = 'matrix142 & cyrilw';
 		$this->version = '0.6';
+		
+		$this->getScriptSettings();
 	}
 	public function onCommand($args) {
 		global $settings;
@@ -546,6 +551,44 @@ class chat_admin extends FoxControlPlugin {
 				} else $this->sendError($CommandAuthor['Login']);
 			}
 		
+		//SCRIPTSETTINGS
+		} else if($args[2] == 'scriptsettings') {
+			if($args[3][0] != '') {
+				if(isset($args[3][1])) {
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set Scriptsettings $fff'.$args[3][0].' $f90to $fff'.$args[3][1].'!', 'f90');
+				
+					if($args[3][1] == 'true') $args[3][1] = true;
+					else if($args[3][1] == 'false') $args[3][1] = false;
+					else if(intval($args[3][1]) == $args[3][1]) $args[3][1] = (int) $args[3][1];
+					
+					$this->scriptSettings[$args[3][0]] = $args[3][1];
+					$this->instance()->client->query('SetModeScriptSettings', $this->scriptSettings);
+					
+					$this->getScriptSettings();
+				}
+			} else {
+				$this->getScriptSettings();
+			
+				$window = $this->window;
+				$window->init();
+				$window->title('$f33S$fffcriptsettings - /scriptsettings <name> <value>');
+				$window->displayAsTable(true);
+					
+				$window->size(70, '');
+				$window->posY('36.8');
+				
+				$window->addButton('Close', 15, true);
+				$window->content('<td width="25">$iName</td><td width="50">$iValue</td>');
+				
+				foreach($this->scriptSettings as $key => $value) {
+					if($value === false) $value = 'false';
+					if($value === true) $value = 'true';
+					$window->content('<td width="25">'.$key.'</td><td width="50">'.$value.'</td>');
+				}
+					
+				$window->show($args[1]);
+			}
+		
 		//SAVE MATCHSETTINGS
 		} else if($args[2] == 'save') {
 			if(!empty($args[3][0])) {
@@ -765,6 +808,59 @@ class chat_admin extends FoxControlPlugin {
 				}
 			} else $this->sendError($CommandAuthor['Login']);
 		
+		//UPDATE
+		} else if($args[2] == 'update') {
+			if($update == true) {
+				$window = $this->window;
+				$window->init();
+				$window->title('$fffUpdate FoxControl');
+				$window->displayAsTable(true);
+				$window->size(50, '');
+				$window->posY('36.8');
+				$window->target('onButtonUpdate', $this);
+				
+				$content = $this->getUpdateInfo();
+		
+				if(isset($content)) {
+					$version = $content->version;
+					$autoupdate = $content->autoupdate;
+		
+					if(SC_Version < $version) {
+						if($autoupdate == 'true') {
+							$link = str_replace('&', '&amp;', $content->release_info);
+					
+							$window->content('<td width="25">Your Version: '.SC_Version.'</td>');
+							$window->content('<td width="25">Newest Version: '.$version.'</td>');
+							$window->content('<td ml="'.$link.'" width="48">Check if this link links to the release notes to make sure it\'s an official update!</td>');
+							$window->content('');
+							$window->content('<td width="40">Do you really want to update FoxControl to the newest version?</td>');
+						
+							$window->addButton('Yes', '7', false);
+							$window->addButton('', '3', false);
+							$window->addButton('No', '7', true);
+						} else {
+							$link = str_replace('&', '&amp;', $content->release_info);
+					
+							$window->content('<td width="25">Your Version: '.SC_Version.'</td>');
+							$window->content('<td width="25">Newest Version: '.$version.'</td>');
+							$window->content('');
+							$window->content('<td width="40">Autoupdate is not possible. Please update manually!</td>');
+							$window->content('<td ml="'.$link.'" width="48">Release notes &amp; download!</td>');
+						
+							$window->addButton('Close', '7', true);
+						}
+					} else {
+						$window->content('<td width="25">No update available!</td>');
+						$window->addButton('Close', '7', true);
+					}
+				} else {
+					$window->content('<td width="25">Error while trying to get Update information. Try again later.</td>');
+					$window->addButton('Close', '7', true);
+				}
+				
+				$window->show($args[1]);
+			} else $this->sendError($CommandAuthor['Login']);
+
 		//CALLVOTE
 		} else if($args[2] == 'callvote') {
 			if($setCallVote == true) {
@@ -796,6 +892,9 @@ console('matchsettings_filename: '.$settings['matchsettings_filename']);
 			
 		}
 	}
+	public function onBeginMap($args) {
+		$this->getScriptSettings();
+	}
 	public function onManialinkPageAnswer($args) {
 		if($args[2] == $this->mlids[0]) {
 			$this->closeMl($this->mlids[0], $args[1]);
@@ -808,6 +907,21 @@ console('matchsettings_filename: '.$settings['matchsettings_filename']);
 		} else if($args[2] == 3) { //>
 			$newargs = array(1 => $args[1], 2 => 'adminhelp', 3 => array(0 => ($this->helpUsers[$args[1]] + 2)));
 			$this->onCommand($newargs);
+		}
+	}
+	public function onButtonUpdate($args) {
+		if($args[2] == 1) {
+			$this->chat('$fff[$06fA$fffuto$06fU$fffpdater] Starting Update...');
+				
+			$pluginUpdate = $this->getPluginInstance('plugin_autoupdate');
+			if($pluginUpdate !== false) {
+				$pluginUpdate->startUpdate();
+			} else {
+				$this->chat('$f90Plugin not activated');
+			}
+				
+			$window = $this->window;
+			$window->closeWindow($args[1]);
 		}
 	}
 	public function sendError($login) {
@@ -836,5 +950,23 @@ console('matchsettings_filename: '.$settings['matchsettings_filename']);
 		$context = stream_context_create($options);
 		return @file_get_contents($url,true,$context );
     }
+	public function getScriptSettings() {
+		$this->instance()->client->query('GetModeScriptSettings');
+		$this->scriptSettings = $this->instance()->client->getResponse();
+	}
+	
+	public function getUpdateInfo() {
+		$fp = fsockopen("www.global-rebels.de", 80, $errno, $errstr, 5);
+	
+		if (!$fp) {
+			console('!!!FOXCONTROL MASTERSERVER ERROR!!!');
+			console($errstr .'('.$errno.')');
+		} else {
+			fwrite($fp, "GET / HTTP/1.1\r\n");
+		
+			$content = simplexml_load_file('http://fox.global-rebels.de/newsupdate/TrackMania2/newsupdate.xml');
+			return $content;
+		}
+	}
 }
 ?>
