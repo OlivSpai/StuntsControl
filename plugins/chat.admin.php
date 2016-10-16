@@ -28,9 +28,15 @@ class chat_admin extends FoxControlPlugin {
 		$this->registerCommand('unban', 'Unbans the specified player. /unban <login>', true);
 		$this->registerCommand('ignore', 'Ignores a players chat message. /ignore <login>', true);
 		$this->registerCommand('unignore', 'Unignores a player', '/unignore <login>', true);
-		$this->registerCommand('reboot', 'Reboots StuntsControl.', true);
+		$this->registerCommand('reboot', 'Reboots FoxControl.', true);
+		$this->registerCommand('skip', 'Skips the current map.', true);
+		$this->registerCommand('restart', 'Restarts the current map.', true);
+		$this->registerCommand('res', 'Restarts the current map. Same command as $s/restart$s.', true);
+		$this->registerCommand('replay', 'Queues the current map for restart.', true);
+		$this->registerCommand('endround', 'Forces round end.', true);
 		$this->registerCommand('planets', 'Shows the planets amount.', true);
 		$this->registerCommand('pay', 'Pays planets to the specified login. /pay <amount> <login>', true);
+		$this->registerCommand('mode', 'Sets the game mode to the specified mode. Type in $s/adminhelp mode$s for more details.', true);
 		$this->registerCommand('forcespec', 'Forces a player into Spectator mode.  /forcespec <login>', true);
 		$this->registerCommand('forceplayer', 'Forces a player into Player mode. /forceplayer <login>', true);
 		$this->registerCommand('forcemap', 'Sets the specified map as next map and skips current. /forcemap <mapid>', true);
@@ -160,6 +166,26 @@ class chat_admin extends FoxControlPlugin {
 					$window->addButton('OK', 15, true);
 					
 					$window->show($args[1]);
+				} else if($command == 'mode') {
+					$window = $this->window;
+					$window->init();
+					$window->title('Adminhelp - Command: mode');
+					$window->close(true);
+					
+					$window->size(70, '');
+					$window->posY('36.8');
+					
+					$window->content('You can set the game mode with the $s/mode$s command:');
+					$window->content('$o/mode script$o Sets game mode to script.');
+					$window->content('$o/mode rounds <points> <forceroundlaps> <pointsnewrules>$o Sets game mode to rounds.');
+					$window->content('$o/mode timeattack <timelimit>$o Sets game mode to timeattack.');
+					$window->content('$o/mode team <points> <maxpoints> <pointsnewrules>$o Sets game mode to team.');
+					$window->content('$o/mode laps <numberoflaps> <timelimit>$o Sets game mode to laps.');
+					$window->content('$o/mode cup <points> <roundsperchallenge> <numberwinners> <warmupduration>$o Sets game mode to cup.');
+					
+					$window->addButton('OK', 15, true);
+					
+					$window->show($args[1]);
 				}
 			}
 		}
@@ -168,6 +194,150 @@ class chat_admin extends FoxControlPlugin {
 		else if($args[2] == 'chatnick') {
 			if(isset($args[3][0]) && isset($args[3][1])) {			
 				$this->instance()->chat_with_nick($args[4], $args[3][0]);
+			}
+		}
+		
+		//CHANGE GAME MODE
+		else if($args[2] == 'mode') {
+			if(isset($args[3][0])) {
+				$gameInfosArray = array();
+			
+				$this->instance()->client->query('GetGameInfos');
+				$gameInfos = $this->instance()->client->getResponse();
+				$gameInfosCurrent = $gameInfos['CurrentGameInfos'];
+			
+				foreach($gameInfosCurrent as $key => $value) {
+					$gameInfosArray[$key] = $value;
+				}
+			
+				//ROUNDS MODE
+				if($args[3][0] == 'rounds') {
+					$gameInfosArray['GameMode'] = 1;
+					
+					if(isset($args[3][1]) && isset($args[3][2])) {
+						$gameInfosArray['RoundsForcedLaps'] = (int) $args[3][2];
+					
+						//USE NEW RULES
+						if(isset($args[3][3])) {
+							$gameInfosArray['RoundsUseNewRules'] = true;
+							$gameInfosArray['RoundsPointsLimitNewRules'] = (int) $args[3][3];
+						
+							$textNewRules = 'Yes';
+						}else {
+							$gameInfosArray['RoundsPointsLimit'] = (int) $args[3][1];
+							$gameInfosArray['RoundsUseNewRules'] = false;
+							$textNewRules = 'No';
+						}
+						
+						$points = $args[3][1];
+						$forcedLaps = $args[3][2];
+					} else {
+						$textNewRules = 'Default';
+						$points = 'Default';
+						$forcedLaps = 'Default';
+					}
+					
+					$this->instance()->client->query('SetGameInfos', $gameInfosArray);
+					
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set GameMode to Rounds, Points '.$points.', ForcedLaps '.$forcedLaps.', Use new Rules '.$textNewRules.'$z$s$f90!', '$f90');
+				}
+			
+				//TIME ATTACK
+				else if($args[3][0] == 'timeattack') {			
+					$gameInfosArray['GameMode'] = 2;
+					
+					if(isset($args[3][1])) {
+						$gameInfosArray['TimeAttackLimit'] = ($args[3][1]*1000);
+						$timeLimit = $args[3][1];
+					} else {
+						$timeLimit = 'Default';
+					}
+					
+					$this->instance()->client->query('SetGameInfos', $gameInfosArray);
+				
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set GameMode to TimeAttack, Timelimit '.$timeLimit.' seconds$z$s$f90!', '$f90');
+				}
+				//TEAM MODE
+				else if($args[3][0] == 'team') {
+					$gameInfosArray['GameMode'] = 3;
+					
+					if(isset($args[3][1]) && isset($args[3][2])) {
+						$gameInfosArray['TeamPointsLimit'] = (int) $args[3][1];
+						$gameInfosArray['TeamMaxPoints'] = (int) $args[3][2];
+				
+						//USE NEW RULES
+						if(isset($args[3][3])) {
+							$gameInfosArray['TeamUseNewRules'] = true;
+							$gameInfosArray['TeamPointsLimitNewRules'] = (int) $args[3][3];
+						
+							$textNewRules = 'Yes';
+						}else {
+							$gameInfosArray['TeamUseNewRules'] = false;
+							$textNewRules = 'No';
+						}
+						
+						$points = $args[3][1];
+						$maxPoints = $args[3][2];
+					} else {
+						$points = 'Default';
+						$maxPoints = 'Default';
+						$textNewRules = 'Default';
+					}
+					
+					$this->instance()->client->query('SetGameInfos', $gameInfosArray);
+				
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set GameMode to Team, Points '.$points.', Max Points '.$maxPoints.', Use new Rules '.$textNewRules.'$z$s$f90!', '$f90');
+			
+					$this->reloadWidgetPosns = true;
+				}
+				
+				//LAPS MODE
+				else if($args[3][0] == 'laps') {
+					$gameInfosArray['GameMode'] = 4;
+					
+					if(isset($args[3][1]) && isset($args[3][2])) {
+						$gameInfosArray['LapsNbLaps'] = (int) $args[3][1];
+						$gameInfosArray['LapsTimeLimit'] = (int) $args[3][2];
+					
+						$nbLaps = $args[3][1];
+						$timeLimit = $args[3][2];
+					} else {
+						$nbLaps = 'Default';
+						$timeLimit = 'Default';
+					}
+					
+					$this->instance()->client->query('SetGameInfos', $gameInfosArray);
+					
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set GameMode to Laps, Number of Laps '.$nbLaps.', Time Limit '.$timeLimit.'$z$s$f90!', '$f90');
+				
+					$this->reloadWidgetPosns = true;
+				}
+				
+				//CUP MODE
+				else if($args[3][0] == 'cup') {
+					
+					if(isset($args[3][1]) && isset($args[3][2])) {
+						$gameInfosArray['GameMode'] = 5;
+						$gameInfosArray['CupPointsLimit'] = (int) $args[3][1];
+						$gameInfosArray['CupRoundsPerChallenge'] = (int) $args[3][2];
+						$gameInfosArray['CupNbWinners'] = (int) $args[3][3];
+						$gameInfosArray['CupWarmUpDuration'] = (int) $args[3][4];
+						
+						$points = $args[3][1];
+						$rounds = $args[3][2];
+						$nbWinners = $args[3][3];
+					} else {
+						$points = 'Default';
+						$rounds = 'Default';
+						$nbWinners = 'Default';
+					}
+					
+					$this->instance()->client->query('SetGameInfos', $gameInfosArray);
+					
+					$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$f90 set GameMode to Cup, Points '.$points.', Rounds '.$rounds.', Number of Winners '.$nbWinners.'$z$s$f90!', '$f90');
+				
+					$this->reloadWidgetPosns = true;
+				}
 			}
 		}
 		
@@ -261,6 +431,44 @@ class chat_admin extends FoxControlPlugin {
 								$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s '.$settings['Color_NewAdmin'].'adds $fff'.$adminAdded.'$z$s '.$settings['Color_NewAdmin'].'as a new Operator!', $settings['Color_NewAdmin']);
 							} else $this->chatToLogin($args[1], 'Player \'$fff'.$args[3][1].'$f60\' not found!', 'f60');
 						} else $this->chatToLogin($args[1], 'Player \'$fff $f60\' not found!', 'f60');
+					} else $this->sendError($CommandAuthor['Login']);
+				
+				//MAP
+				} else if($args[3][0] == 'map') {
+					if($admin_add_track == true) {
+						if(!empty($args[3][1]) AND is_numeric($args[3][1])){
+							include_once('include/gbxdatafetcher.inc.php');
+						
+							$mxid = $args[3][1];
+							//Get Data of the Track from ManiaExchange
+							$read = simplexml_load_string($this->getDataFromUrl('http://api.mania-exchange.com/tm/maps/'.$mxid.'?format=xml'));
+							
+							//Set Filename and Trackname
+							if(!isset($read->TrackInfo->Name)) {
+								$this->chatToLogin($CommandAuthor['Login'], 'The map with ID '.$mxid.' does not exist or MX is down!', 'f60');
+								return;
+							}
+							
+							$filename = $read->TrackInfo->Name.'.Map.Gbx';
+							$trackname = $read->TrackInfo->Name;
+							
+							//Get the Trackfile
+							$trackfile = $this->getDataFromUrl('http://tm.mania-exchange.com/tracks/download/'.$mxid.'');	
+						
+							if(!empty($trackfile) && !empty($filename)) {
+								//Get Map Directory
+								$this->instance()->client->query('GetMapsDirectory');
+								$trackdir = $this->instance()->client->getResponse();							
+									
+								//Write Trackfile to the server
+								$dir = $trackdir.$this->trackdir.'/'.$filename;
+								file_put_contents($dir, $trackfile);
+								
+								//Insert Map
+								$this->instance()->client->query('InsertMap', $dir);
+								$this->chat($rights[1].' '.$CommandAuthor['NickName'].'$z$s$0f0 added $fff'.$trackname.'$0f0 (ID: $fff'.$mxid.'$0f0) from MX!', '0f0');
+							} else $this->chatToLogin($CommandAuthor['Login'], 'The map with ID '.$mxid.' does not exsit or MX is down!', 'f60');
+						} else $this->chatToLogin($CommandAuthor['Login'], 'The ID must be numeric!', 'f60');
 					} else $this->sendError($CommandAuthor['Login']);
 				}
 			}
@@ -496,6 +704,39 @@ class chat_admin extends FoxControlPlugin {
 		{
 			if($reboot_script==true) $this->instance()->Reboot();
 			else $this->sendError($CommandAuthor['Login']);		
+		}
+		
+		//SKIP TRACK
+		else if($args[2] == 'skip') {
+			if($skip_challenge==true){
+				$this->instance()->challenge_skip();
+				$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s $f90skipped the map!', 'f90');
+			} else $this->sendError($CommandAuthor['Login']);
+		
+		//RESTART TRACK
+		} else if($args[2] == 'restart' || $args[2] == 'res') {
+			if($restart_challenge==true){
+				global $chall_restarted_admin;
+				$chall_restarted_admin = true;
+				$this->instance()->client->query('RestartMap');
+				$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s $f90restarted the map!', 'f90');
+			} else $this->sendError($CommandAuthor['Login']);
+		
+		//REPLAY TRACK
+		} else if($args[2] == 'replay') {
+			$this->instance()->client->query('GetCurrentMapInfo');
+			$currentChallenge = $this->instance()->client->getResponse();
+			
+			$this->instance()->client->query('ChooseNextMap', $currentChallenge['FileName']);
+			
+			$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s $f90queues the current map for replay!', 'f90');
+		
+		//FORCE ENDROUND
+		} else if($args[2] == 'endround') {
+			if($force_end_round==true){
+				$this->instance()->client->query('ForceEndRound');
+				$this->chat($rights[1].' $fff'.$CommandAuthor['NickName'].'$z$s $f90forced round end!', 'f90');
+			} else $this->sendError($CommandAuthor['Login']);
 		
 		//SHOW PLANETS
 		} else if($args[2] == 'planets') {
